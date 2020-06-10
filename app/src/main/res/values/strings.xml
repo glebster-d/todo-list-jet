@@ -1,0 +1,68 @@
+<resources>
+    // Application data (name, version etc.)
+    <string name="app_name">MyTodoList</string>
+    <string name="app_author">Glebster-D</string>
+    <string name="app_version">1.0.0</string>
+
+    // Shared preferences values
+
+
+    <string name="settings">Settings</string>
+<!--    <string name="add_edit_event"></string>-->
+
+    // Database
+    <string name="db_name">event_database</string>
+
+
+    // Titles of EventOperationFragment elements
+    <string name="tv_title_label">Event title:</string>
+    <string name="et_title_hint">Add event title</string>
+    <string name="tv_description_label">Event description:</string>
+    <string name="et_description_hint">Add event description</string>
+    <string name="tv_date_label">Date:</string>
+    <string name="et_date_hint">Tap to add date</string>
+    <string name="tv_time_label">Time:</string>
+    <string name="et_time_hint">Tap to add time</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+
+    <string name="fragment_add_title">Add event</string>
+    <string name="fragment_edit_title">Edit event</string>
+
+    // Title of empty MainListFragment
+    <string name="tv_empty_list_label">Your list is empty</string>
+
+    // Titles of RecycleView Item elements (DELETE AFTER DEBUGGING THIS STRINGS AND USAGE IN XML LAYOUT!!!!!)
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+
+
+    // Titles of preference categories
+    <string name="pref_category_alarm_settings_title">Alarm Settings</string>
+    <string name="pref_category_about_title">About</string>
+
+    // Values for preferences
+    <string name="pref_alarm_check_title">Enable alarm</string>
+    <string name="pref_alarm_check_summary">Enables alarm settings</string>
+    <string name="pref_alarm_check_key">alarm_enable_check</string>
+
+    <string name="pref_alarm_time_title">Set time</string>
+    <string name="pref_alarm_time_summary">Set notification alarm time</string>
+    <string name="pref_alarm_time_default">00:00</string>
+    <string name="pref_alarm_time_key">alarm_time</string>
+
+    <string name="pref_alarm_sound_title">Set sound</string>
+    <string name="pref_alarm_sound_summary">Set notification alarm sound</string>
+    <string name="pref_alarm_sound_default">content://settings/system/notification_sound</string>
+    <string name="pref_alarm_sound_key">alarm_sound</string>
+
+    <string name="pref_about_author_title">Developed by:</string>
+    <string name="pref_about_version_title">Version</string>
+
+    // Snackbar and Toast messages
+    <string name="event_was_added">Event was added</string>
+    <string name="event_was_updated">Event was updated</string>
+    <string name="cannot_save_empty_event">Cannot save empty event</string>
+
+
+</resources>

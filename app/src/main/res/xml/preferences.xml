@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <androidx.preference.PreferenceCategory
+        app:title = "@string/pref_category_alarm_settings_title">
+
+        <androidx.preference.CheckBoxPreference
+            app:title="@string/pref_alarm_check_title"
+            app:summary="@string/pref_alarm_check_summary"
+            app:key="@string/pref_alarm_check_key"
+            app:defaultValue="true"/>
+
+        <androidx.preference.Preference
+            app:title="@string/pref_alarm_time_title"
+            app:summary="@string/pref_alarm_time_summary"
+            app:key = "@string/pref_alarm_time_key"
+            app:defaultValue="@string/pref_alarm_time_default"
+            app:enabled="true"/>
+
+        <androidx.preference.ListPreference
+            app:title="@string/pref_alarm_sound_title"
+            app:summary="@string/pref_alarm_sound_summary"
+            app:key="@string/pref_alarm_sound_key"
+            app:defaultValue="@string/pref_alarm_sound_default"
+            app:enabled="true"/>
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title = "@string/pref_category_about_title">
+
+        <androidx.preference.Preference
+            app:title="@string/pref_about_author_title"
+            app:summary="@string/app_author"
+            app:selectable="false"/>
+
+        <androidx.preference.Preference
+            app:title="@string/pref_about_version_title"
+            app:summary="@string/app_version"
+            app:selectable="false"
+            app:allowDividerAbove="true"/>
+
+
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
