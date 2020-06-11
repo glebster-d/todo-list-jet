@@ -21,6 +21,9 @@ import com.glebsterd.mytodolist.fragments.SettingsFragment;
 import com.glebsterd.mytodolist.helpers.MainListViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * Main activity for application
+ */
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "MainActivity";
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     private FloatingActionButton fab;
     private MainListViewModel listViewModel;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +60,9 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     }// onCreate
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -63,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     }// onCreateOptionsMenu
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -104,12 +115,18 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     }// replaceFragment
 
-
-
+    /**
+     *
+     * @return FAB of main activity
+     */
     public FloatingActionButton getFab() {
         return fab;
     }
 
+    /**
+     *
+     * @return main view model object
+     */
     public MainListViewModel getViewModel() {
         return listViewModel;
     }

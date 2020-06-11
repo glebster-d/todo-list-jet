@@ -22,6 +22,7 @@ public class AlarmBuilder {
      */
     public static void createAlarm(Context context, int hourOfDay, int minuteOfDay) {
 
+        // TODO: 11/06/2020 Add option for AM-PM clock 
         Intent intent = new Intent(context, NotificationService.class);
         final PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
 
