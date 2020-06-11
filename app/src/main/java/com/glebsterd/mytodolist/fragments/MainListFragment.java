@@ -44,6 +44,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         return new MainListFragment();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         Log.d(TAG, "[OnAttach Method] ---> IN ");
@@ -52,6 +55,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         Log.d(TAG, "[OnAttach Method] ---> OUT ");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +65,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         return inflater.inflate(R.layout.fragment_main_recycle_view, container, false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "[OnViewCreated Method] ---> IN ");
@@ -91,6 +100,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onResume() {
         Log.d(TAG, "[OnResume Method] ---> IN ");
@@ -99,6 +111,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         Log.d(TAG, "[OnResume Method] ---> OUT ");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPause() {
         Log.d(TAG, "[OnPause Method] ---> IN ");
@@ -107,13 +122,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         Log.d(TAG, "[OnPause Method] ---> OUT ");
     }
 
-    @Override
-    public void onStop() {
-        Log.d(TAG, "[OnStop Method] ---> IN ");
-        super.onStop();
-        Log.d(TAG, "[OnStop Method] ---> OUT");
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEventClick(Event event) {
 

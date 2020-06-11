@@ -1,18 +1,24 @@
 package com.glebsterd.mytodolist.services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
 
+import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
 import com.glebsterd.mytodolist.persistance.Event;
+import com.glebsterd.mytodolist.persistance.EventRepository;
 
 import java.util.List;
 
@@ -23,7 +29,8 @@ import java.util.List;
 public class NotificationService extends Service {
 
     private static final int NOTIFICATION = 30;
-    private NotificationManager notificationManager;
+    private NotificationManagerCompat notificationManager;
+    private EventRepository eventRepository;
 
     /**
      * {@inheritDoc}
@@ -31,9 +38,9 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
 
-        //DatabaseTool dbTool = new DatabaseTool(this);
+        eventRepository = new EventRepository(getApplication());
+        List<Event> eventList = eventRepository.getEventsList().getValue();
 
-        setNotificationManager();
 
         //DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ROOT);
         //Date currentDate = new Date();
@@ -56,32 +63,6 @@ public class NotificationService extends Service {
         return null;
     }
 
-    // Create instance of notification manager and set notification channel if api version greater
-    // or equeal to 26
-    private void setNotificationManager() {
-
-//        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        // If OS version equals or greater than API 26, create notification channel
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//
-//            String channelId = getString(R.string.channel_id);
-//            CharSequence name = getString(R.string.channel_name);
-//            String description = getString(R.string.channel_description);
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-//            channel.setDescription(description);
-//            channel.enableLights(true);
-//            channel.setLightColor(Color.RED);
-//            channel.enableVibration(true);
-//            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-//            channel.setShowBadge(false);
-//            channel.setBypassDnd(true);
-//            channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-
-    }// setNotificationManager
 
     /**
      * {@inheritDoc}

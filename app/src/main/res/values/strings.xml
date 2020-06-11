@@ -64,5 +64,10 @@
     <string name="event_was_updated">Event was updated</string>
     <string name="cannot_save_empty_event">Cannot save empty event</string>
 
+    //Notifications
+    <string name="channel_id">to_do_notification_channel</string>
+    <string name="channel_name">Main notification</string>
+    <string name="channel_description">This is the main notification channel for this app. If you disable it the notifications will not appear.</string>
+
 
 </resources>
