@@ -2,6 +2,7 @@ package com.glebsterd.mytodolist.persistance;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.glebsterd.mytodolist.helpers.AddEventAsyncTask;
@@ -38,6 +39,11 @@ public class EventRepository {
 
     public LiveData<List<Event>> getEventsList() {
         return eventsList;
+    }
+
+    public LiveData<List<Event>> getAllEventsSortedByDate(@NonNull String date) {
+
+        return eventDao.getAllEventsSortedByDate(date);
     }
 
 }// EventRepository.class
