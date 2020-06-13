@@ -7,13 +7,23 @@ import android.app.NotificationManager;
 import android.graphics.Color;
 import android.os.Build;
 
+import com.glebsterd.mytodolist.helpers.NotificationAlarmStarter;
 
+
+/**
+ *
+ */
 public class App extends Application {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate() {
         super.onCreate();
         setNotificationChannels();
+        NotificationAlarmStarter alarmStarter = new NotificationAlarmStarter(this);
+        alarmStarter.startAlarms();
     }
 
     // Set notification channel if api version greater or equals to 26
@@ -42,4 +52,4 @@ public class App extends Application {
         }
 
     }// setNotificationChannels
-}
+}// class
