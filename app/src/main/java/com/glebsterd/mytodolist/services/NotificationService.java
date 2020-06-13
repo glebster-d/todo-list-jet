@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
 import com.glebsterd.mytodolist.helpers.NotificationAlarmStarter;
+import com.glebsterd.mytodolist.helpers.NotificationRunnable;
 import com.glebsterd.mytodolist.persistance.Event;
 import com.glebsterd.mytodolist.persistance.EventRepository;
 
@@ -59,7 +60,22 @@ public class NotificationService extends Service {
         NotificationAlarmStarter alarmStarter = new NotificationAlarmStarter(getApplication());
         alarmStarter.startAlarms();
 
-        stopSelf();
+        //stopSelf();
+
+        Thread notificationThread = new Thread(new NotificationRunnable());
+        notificationThread.start();
+
+        while(true) {
+
+            if (notificationThread.isAlive()) {
+
+                try {
+                    notificationThread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }// onCreate
 
