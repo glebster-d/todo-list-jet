@@ -87,6 +87,8 @@ public class NotificationService extends Service {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+
+
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
@@ -95,10 +97,11 @@ public class NotificationService extends Service {
             // If this is a first notification, create notification summary with first notificaton
             if (notificationCounter == 0) {
 
-                // TODO: 11/06/2020 Add appropriate icon for notification builder
                 // Set notification summary group
-                NotificationCompat.Builder summaryNotificationBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
-                        //.setSmallIcon(R.drawable.ic_stat_notifications_todolist)
+                NotificationCompat.Builder summaryNotificationBuilder =
+                        new NotificationCompat.Builder(this, getString(R.string.channel_id));
+                summaryNotificationBuilder
+                        .setSmallIcon(R.drawable.ic_stat_notifications_todolist)
                         .setGroup(GROUP_KEY_EVENTS)
                         .setGroupSummary(true)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -106,8 +109,10 @@ public class NotificationService extends Service {
                         .setAutoCancel(true);
 
                 // Create notification and add to notification summary group
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
-                        //.setSmallIcon(R.drawable.ic_stat_notifications_todolist)
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat.Builder(this, getString(R.string.channel_id));
+                notificationBuilder
+                        .setSmallIcon(R.drawable.ic_stat_notifications_todolist)
                         .setContentTitle(entry.getTitle())
                         .setContentText(entry.getDescription())
                         .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -132,7 +137,7 @@ public class NotificationService extends Service {
                         new NotificationCompat.Builder(this, getString(R.string.channel_id));
 
                 notificationBuilder.setContentTitle(entry.getTitle())
-                        //.setSmallIcon(R.drawable.ic_stat_notifications_todolist)
+                        .setSmallIcon(R.drawable.ic_stat_notifications_todolist)
                         .setContentText(entry.getDescription())
                         .setPriority(NotificationCompat.PRIORITY_LOW)
                         .setGroup(GROUP_KEY_EVENTS)
