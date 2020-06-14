@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.glebsterd.mytodolist.services.NotificationService;
 
@@ -35,7 +36,13 @@ public class AlarmBuilder {
 
         // Set repeating alarm with interval of day from time that user set in settings
         if(manager != null){
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+            else {
+                manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
         }
 
     }// createAlarm

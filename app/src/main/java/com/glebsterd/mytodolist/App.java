@@ -4,10 +4,11 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 
-import com.glebsterd.mytodolist.helpers.NotificationAlarmStarter;
+import com.glebsterd.mytodolist.services.NotificationService;
 
 
 /**
@@ -22,8 +23,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         setNotificationChannels();
-        NotificationAlarmStarter alarmStarter = new NotificationAlarmStarter(this);
-        alarmStarter.startAlarms();
+
+        Intent intent = new Intent(this, NotificationService.class);
+        startService(intent);
     }
 
     // Set notification channel if api version greater or equals to 26
