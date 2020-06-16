@@ -4,11 +4,11 @@ import android.app.Application;
 
 public class NotificationRunnable implements Runnable {
 
-    private NotificationAlarmStarter alarmStarter;
+    private NotificationPusher notificationPusher;
 
     public NotificationRunnable(Application application) {
 
-        alarmStarter = new NotificationAlarmStarter(application);
+        notificationPusher = new NotificationPusher(application);
     }
 
     /**
@@ -20,7 +20,7 @@ public class NotificationRunnable implements Runnable {
         while (true) {
 
 
-            alarmStarter.startAlarms();
+            notificationPusher.startAlarms();
             goToSleep();
         }
     }

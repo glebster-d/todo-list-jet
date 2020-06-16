@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public final class NotificationAlarmStarter {
+public final class NotificationPusher {
 
     private static final int NOTIFICATION = 30;
 
@@ -30,7 +30,7 @@ public final class NotificationAlarmStarter {
     private Application application;
     private Calendar calendar;
 
-    public NotificationAlarmStarter(Application application) {
+    public NotificationPusher(Application application) {
         this.application = application;
     }
 
@@ -40,12 +40,26 @@ public final class NotificationAlarmStarter {
         EventRepository eventRepository = new EventRepository(application);
         calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         String date = java.text.DateFormat.getDateInstance().format(calendar.getTime());
+        String time = java.text.DateFormat.getDateInstance().format(calendar.getTime().getTime());
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
+        String rawTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0");
 
         List<Event> eventList = eventRepository.getAllEventsSortedByDate(date).getValue();
 
+
         if (eventList != null) {
 
-            createNotification(eventList);
+            for (Event event: eventList) {
+
+                int notificationTime = Integer.parseInt(event.getTime());
+                int prefTime = Integer.parseInt(rawTime);
+                int
+
+                if (notificationTime == time - rawTime) {
+                    createNotification(event);
+                }
+            }
         }
 
     }// startAlarms
@@ -68,7 +82,7 @@ public final class NotificationAlarmStarter {
 
 
     // Method iterate through the list of entries and create notifications for them
-    private void createNotification(@NonNull List<Event> list) {
+    private void createNotification(@NonNull Event event) {
 
         final String GROUP_KEY_EVENTS = "to_do_list_group";
         int notificationCounter = 0;
@@ -80,7 +94,7 @@ public final class NotificationAlarmStarter {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
 
-        for (Event entry : list) {
+        //for (Event entry : list) {
 
             // If this is a first notification, create notification summary with first notificaton
             if (notificationCounter == 0) {
@@ -101,8 +115,8 @@ public final class NotificationAlarmStarter {
                         new NotificationCompat.Builder(application, application.getString(R.string.channel_id));
                 notificationBuilder
                         .setSmallIcon(R.drawable.ic_stat_notifications_todolist)
-                        .setContentTitle(entry.getTitle())
-                        .setContentText(entry.getDescription())
+                        .setContentTitle(event.getTitle())
+                        .setContentText(event.getDescription())
                         .setPriority(NotificationCompat.PRIORITY_LOW)
                         .setGroup(GROUP_KEY_EVENTS)
                         .setGroupSummary(false);
@@ -124,9 +138,9 @@ public final class NotificationAlarmStarter {
                 NotificationCompat.Builder notificationBuilder =
                         new NotificationCompat.Builder(application, application.getString(R.string.channel_id));
 
-                notificationBuilder.setContentTitle(entry.getTitle())
+                notificationBuilder.setContentTitle(event.getTitle())
                         .setSmallIcon(R.drawable.ic_stat_notifications_todolist)
-                        .setContentText(entry.getDescription())
+                        .setContentText(event.getDescription())
                         .setPriority(NotificationCompat.PRIORITY_LOW)
                         .setGroup(GROUP_KEY_EVENTS)
                         .setGroupSummary(false);
@@ -142,7 +156,7 @@ public final class NotificationAlarmStarter {
 
             notificationCounter++;
 
-        }// foreach
+        //}// foreach
 
     }// createNotification
 
