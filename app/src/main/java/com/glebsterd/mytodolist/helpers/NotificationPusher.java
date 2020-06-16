@@ -39,24 +39,34 @@ public final class NotificationPusher {
         notificationManager = NotificationManagerCompat.from(application);
         EventRepository eventRepository = new EventRepository(application);
         calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        String date = java.text.DateFormat.getDateInstance().format(calendar.getTime());
-        String time = java.text.DateFormat.getDateInstance().format(calendar.getTime().getTime());
+        String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
+
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
-        String rawTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0");
+        String preferenceTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0");
 
-        List<Event> eventList = eventRepository.getAllEventsSortedByDate(date).getValue();
+        List<Event> eventList = eventRepository.getAllEventsSortedByDate(dateNow).getValue();
 
 
         if (eventList != null) {
 
             for (Event event: eventList) {
 
-                int notificationTime = Integer.parseInt(event.getTime());
-                int prefTime = Integer.parseInt(rawTime);
-                int
+                int notificationHour , notificationMinute;
+                String [] raw = event.getTime().split("[: ]+");
 
-                if (notificationTime == time - rawTime) {
+                if(DateFormat.is24HourFormat(application)) {
+
+                    notificationHour = Integer.parseInt(raw[0]);
+                    notificationMinute = Integer.parseInt(raw[1]);
+                }
+
+
+                int prefTime = Integer.parseInt(preferenceTime);
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+
+                if (notificationTime == time - preferenceTime) {
                     createNotification(event);
                 }
             }
