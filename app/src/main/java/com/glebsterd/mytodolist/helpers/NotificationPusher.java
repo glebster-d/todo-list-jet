@@ -42,7 +42,7 @@ public final class NotificationPusher {
         String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
-        String preferenceTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0");
+        String[] preferenceTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0 minutes").split(" ");
 
         List<Event> eventList = eventRepository.getAllEventsSortedByDate(dateNow).getValue();
 
@@ -50,29 +50,29 @@ public final class NotificationPusher {
 
             for (Event event: eventList) {
 
-                int notificationHour , notificationMinute;
+                int eventNotificationHour , eventNotificationMinute;
                 String [] raw = event.getTime().split("[: ]+");
 
                 if(DateFormat.is24HourFormat(application)) {
 
-                    notificationHour = Integer.parseInt(raw[0]);
-                    notificationMinute = Integer.parseInt(raw[1]);
+                    eventNotificationHour = Integer.parseInt(raw[0]);
+                    eventNotificationMinute = Integer.parseInt(raw[1]);
+
+                    int prefTime = Integer.parseInt(preferenceTime[0]);
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int minute = calendar.get(Calendar.MINUTE);
+
+                    if (eventNotificationHour == hour && eventNotificationMinute == Math.abs(minute - prefTime)) {
+                        createNotification(event);
+                    }
                 }
                 else {
-                    notificationHour = Integer.parseInt(raw[0]);
-                    notificationMinute = Integer.parseInt(raw[1]);
+                    eventNotificationHour = Integer.parseInt(raw[0]);
+                    eventNotificationMinute = Integer.parseInt(raw[1]);
                     String amPm = raw[2];
 
                 }
 
-
-                int prefTime = Integer.parseInt(preferenceTime);
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-
-                if (notificationTime == time - preferenceTime) {
-                    createNotification(event);
-                }
             }
         }
 

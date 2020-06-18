@@ -61,8 +61,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
      static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        //private final String TAG = this.getClass().getSimpleName();
-
         private final AppCompatTextView tvTitle;
         private final AppCompatTextView tvDate;
         private final AppCompatTextView tvDescription;
