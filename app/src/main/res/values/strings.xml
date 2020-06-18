@@ -46,12 +46,27 @@
     <string name="pref_alarm_check_summary">Enables alarm settings</string>
     <string name="pref_alarm_check_key">alarm_enable_check</string>
 
-    <string name="pref_alarm_time_title">Set time</string>
-    <string name="pref_alarm_time_summary">Set notification alarm time</string>
-    <string name="pref_alarm_time_default">00:00</string>
-    <string name="pref_alarm_time_key">alarm_time</string>
+    <string name="pref_alarm_time_title">Set reminder time</string>
+    <string name="pref_alarm_time_summary">Set reminder time for notification</string>
+    <string name="pref_alarm_time_default">5 minutes</string>
+    <string name="pref_alarm_time_key">reminder_time</string>
 
-    <string name="pref_alarm_sound_title">Set sound</string>
+    // Values for Dropdown list preference
+    <string name="pref_alarm_time_0_minutes">0 minutes</string>
+    <string name="pref_alarm_time_5_minutes">5 minutes</string>
+    <string name="pref_alarm_time_10_minutes">10 minutes</string>
+    <string name="pref_alarm_time_15_minutes">15 minutes</string>
+    <string name="pref_alarm_time_20_minutes">20 minutes</string>
+    <string name="pref_alarm_time_25_minutes">25 minutes</string>
+    <string name="pref_alarm_time_30_minutes">30 minutes</string>
+    <string name="pref_alarm_time_35_minutes">35 minutes</string>
+    <string name="pref_alarm_time_40_minutes">40 minutes</string>
+    <string name="pref_alarm_time_45_minutes">45 minutes</string>
+    <string name="pref_alarm_time_50_minutes">50 minutes</string>
+    <string name="pref_alarm_time_55_minutes">55 minutes</string>
+    <string name="pref_alarm_time_60_minutes">60 minutes</string>
+
+    <string name="pref_alarm_sound_title">Set notification sound</string>
     <string name="pref_alarm_sound_summary">Set notification alarm sound</string>
     <string name="pref_alarm_sound_default">content://settings/system/notification_sound</string>
     <string name="pref_alarm_sound_key">alarm_sound</string>

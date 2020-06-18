@@ -41,12 +41,10 @@ public final class NotificationPusher {
         calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
 
-
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
         String preferenceTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0");
 
         List<Event> eventList = eventRepository.getAllEventsSortedByDate(dateNow).getValue();
-
 
         if (eventList != null) {
 
@@ -59,6 +57,12 @@ public final class NotificationPusher {
 
                     notificationHour = Integer.parseInt(raw[0]);
                     notificationMinute = Integer.parseInt(raw[1]);
+                }
+                else {
+                    notificationHour = Integer.parseInt(raw[0]);
+                    notificationMinute = Integer.parseInt(raw[1]);
+                    String amPm = raw[2];
+
                 }
 
 

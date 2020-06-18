@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.CheckBoxPreference;
+import androidx.preference.DropDownPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -34,7 +35,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private static final String TAG = "SettingsFragment";
 
-    private Preference timePreference;
+    //private Preference timePreference;
+    private DropDownPreference reminderTime;
     private ListPreference ringtonePreference;
     private MainActivity parentActivity;
 
@@ -96,9 +98,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
         boolean isEnabled = PreferenceManager.getDefaultSharedPreferences(requireContext())
                                 .getBoolean(getString(R.string.pref_alarm_check_key), true);
 
-        timePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_time_key));
-        Objects.requireNonNull(timePreference).setEnabled(isEnabled);
-        timePreference.setOnPreferenceClickListener(this);
+//        timePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_time_key));
+//        Objects.requireNonNull(timePreference).setEnabled(isEnabled);
+//        timePreference.setOnPreferenceClickListener(this);
+
+        reminderTime = getPreferenceManager().findPreference(getString(R.string.pref_alarm_time_key));
+        Objects.requireNonNull(reminderTime).setEnabled(isEnabled);
+        reminderTime.setOnPreferenceClickListener(this);
 
         ringtonePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_sound_key));
         Objects.requireNonNull(ringtonePreference).setEnabled(isEnabled);
@@ -189,7 +195,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if(preference.getKey().equals(getString(R.string.pref_alarm_check_key))){
 
             ringtonePreference.setEnabled(Boolean.parseBoolean(newValue.toString()));
-            timePreference.setEnabled(Boolean.parseBoolean(newValue.toString()));
+            reminderTime.setEnabled(Boolean.parseBoolean(newValue.toString()));
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
             sharedPreferences.edit().putBoolean(getString(R.string.pref_alarm_check_key),
                     Boolean.parseBoolean(newValue.toString())).commit();

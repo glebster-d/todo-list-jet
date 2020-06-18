@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_notification_reminder_values">
+        <item>@string/pref_alarm_time_0_minutes</item>
+        <item>@string/pref_alarm_time_5_minutes</item>
+        <item>@string/pref_alarm_time_10_minutes</item>
+        <item>@string/pref_alarm_time_15_minutes</item>
+        <item>@string/pref_alarm_time_20_minutes</item>
+        <item>@string/pref_alarm_time_25_minutes</item>
+        <item>@string/pref_alarm_time_30_minutes</item>
+        <item>@string/pref_alarm_time_35_minutes</item>
+        <item>@string/pref_alarm_time_40_minutes</item>
+        <item>@string/pref_alarm_time_45_minutes</item>
+        <item>@string/pref_alarm_time_50_minutes</item>
+        <item>@string/pref_alarm_time_55_minutes</item>
+        <item>@string/pref_alarm_time_60_minutes</item>
+    </string-array>
+</resources>
