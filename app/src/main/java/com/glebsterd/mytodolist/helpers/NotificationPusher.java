@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -17,6 +18,14 @@ import com.glebsterd.mytodolist.activity.MainActivity;
 import com.glebsterd.mytodolist.persistance.Event;
 import com.glebsterd.mytodolist.persistance.EventRepository;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -24,11 +33,14 @@ import java.util.TimeZone;
 
 public final class NotificationPusher {
 
+    private static final String TAG = "NotificationPusher";
+
     private static final int NOTIFICATION = 30;
 
     private NotificationManagerCompat notificationManager;
     private Application application;
-    private Calendar calendar;
+    private LocalTime localTimeNow;
+    //private Calendar calendar;
 
     public NotificationPusher(Application application) {
         this.application = application;
@@ -38,13 +50,21 @@ public final class NotificationPusher {
 
         notificationManager = NotificationManagerCompat.from(application);
         EventRepository eventRepository = new EventRepository(application);
-        calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
+        //calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        //String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
+        //String localDate = LocalDate.now().toString();
+        String localTime = LocalTime.now(ZoneId.systemDefault()).toString();
+
+        //Log.d(TAG, "[StartAlarms] ---> dateFormat = " + dateNow);
+        //Log.d(TAG, "[StartAlarms] ---> localDate = " + localDate);
+        Log.d(TAG, "[StartAlarms] ---> localTime = " + localTime);
+        Log.d(TAG, "[StartAlarms] ---> ZoneId = " + ZoneId.systemDefault());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
-        String[] preferenceTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0 minutes").split(" ");
+        String[] preferenceReminderTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0 minutes").split(" ");
 
-        List<Event> eventList = eventRepository.getAllEventsSortedByDate(dateNow).getValue();
+        String localDate = LocalDate.now().toString();
+        List<Event> eventList = eventRepository.getAllEventsSortedByDate(localDate).getValue();
 
         if (eventList != null) {
 
@@ -58,15 +78,25 @@ public final class NotificationPusher {
                     eventNotificationHour = Integer.parseInt(raw[0]);
                     eventNotificationMinute = Integer.parseInt(raw[1]);
 
-                    int prefTime = Integer.parseInt(preferenceTime[0]);
-                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                    int minute = calendar.get(Calendar.MINUTE);
+                    int prefTime = Integer.parseInt(preferenceReminderTime[0]);
 
-                    if (eventNotificationHour == hour && eventNotificationMinute == Math.abs(minute - prefTime)) {
+                    //int hour = localTimeNow.getHour();
+                    //int minute = localTimeNow.getMinute();
+
+                    LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
+                    long duration = ChronoUnit.MINUTES.between(eventTime, localTimeNow);
+
+
+                    //DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern("hh:mm a", DateTimeFormatter.)
+
+                    if (duration == prefTime) {
                         createNotification(event);
                     }
                 }
                 else {
+
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
                     eventNotificationHour = Integer.parseInt(raw[0]);
                     eventNotificationMinute = Integer.parseInt(raw[1]);
                     String amPm = raw[2];
@@ -78,21 +108,21 @@ public final class NotificationPusher {
 
     }// startAlarms
 
-    private void setNotificationAlarmTime() {
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
-        String alarmTime = preferences.getString(application.getString(R.string.pref_alarm_time_key), " ");
-        EventRepository repository = new EventRepository(application);
-        repository.getAllEventsSortedByDate(Calendar.getInstance().getTime().toString());
-
-        if (DateFormat.is24HourFormat(application)) {
-            String[] rawTime = alarmTime.split("[: ]+");
-
-        }
-        else {
-
-        }
-    }// setNotificationAlarmTime
+//    private void setNotificationAlarmTime() {
+//
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
+//        String alarmTime = preferences.getString(application.getString(R.string.pref_alarm_time_key), " ");
+//        EventRepository repository = new EventRepository(application);
+//        repository.getAllEventsSortedByDate(Calendar.getInstance().getTime().toString());
+//
+//        if (DateFormat.is24HourFormat(application)) {
+//            String[] rawTime = alarmTime.split("[: ]+");
+//
+//        }
+//        else {
+//
+//        }
+//    }// setNotificationAlarmTime
 
 
     // Method iterate through the list of entries and create notifications for them

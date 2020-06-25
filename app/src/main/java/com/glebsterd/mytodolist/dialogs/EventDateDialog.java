@@ -14,6 +14,8 @@ import com.glebsterd.mytodolist.helpers.DialogFragmentListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -39,10 +41,15 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
             year = savedInstanceState.getInt("year");
         }
         else{
-            Calendar calendar = getCalendarFromArguments();
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-            month = calendar.get(Calendar.MONTH);
-            year = calendar.get(Calendar.YEAR);
+//            Calendar calendar = getCalendarFromArguments();
+//            day = calendar.get(Calendar.DAY_OF_MONTH);
+//            month = calendar.get(Calendar.MONTH);
+//            year = calendar.get(Calendar.YEAR);
+
+            LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
+            day = localDate.getDayOfMonth();
+            month = localDate.getMonthValue();
+            year = localDate.getYear();
         }
 
         return new DatePickerDialog(requireActivity(), this, year, month, day);
