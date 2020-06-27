@@ -53,12 +53,14 @@ public final class NotificationPusher {
         //calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         //String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
         //String localDate = LocalDate.now().toString();
-        String localTime = LocalTime.now(ZoneId.systemDefault()).toString();
+        //String localTime = LocalTime.now(ZoneId.systemDefault()).toString();
 
         //Log.d(TAG, "[StartAlarms] ---> dateFormat = " + dateNow);
         //Log.d(TAG, "[StartAlarms] ---> localDate = " + localDate);
-        Log.d(TAG, "[StartAlarms] ---> localTime = " + localTime);
-        Log.d(TAG, "[StartAlarms] ---> ZoneId = " + ZoneId.systemDefault());
+        //Log.d(TAG, "[StartAlarms] ---> localTime = " + localTime);
+        //Log.d(TAG, "[StartAlarms] ---> ZoneId = " + ZoneId.systemDefault());
+
+        localTimeNow = LocalTime.now(ZoneId.systemDefault());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
         String[] preferenceReminderTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0 minutes").split(" ");
@@ -98,7 +100,6 @@ public final class NotificationPusher {
                     String amPm = raw[2];
 
                 }
-
             }
         }
 
