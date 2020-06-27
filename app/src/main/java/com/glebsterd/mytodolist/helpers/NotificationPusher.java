@@ -80,14 +80,8 @@ public final class NotificationPusher {
 
                     int prefTime = Integer.parseInt(preferenceReminderTime[0]);
 
-                    //int hour = localTimeNow.getHour();
-                    //int minute = localTimeNow.getMinute();
-
                     LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
                     long duration = ChronoUnit.MINUTES.between(eventTime, localTimeNow);
-
-
-                    //DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern("hh:mm a", DateTimeFormatter.)
 
                     if (duration == prefTime) {
                         createNotification(event);
@@ -96,6 +90,8 @@ public final class NotificationPusher {
                 else {
 
                     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+                    //DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern("hh:mm a", DateTimeFormatter.)
 
                     eventNotificationHour = Integer.parseInt(raw[0]);
                     eventNotificationMinute = Integer.parseInt(raw[1]);

@@ -12,15 +12,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.glebsterd.mytodolist.helpers.DialogFragmentListener;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.TimeZone;
 
 
 public class EventDateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -41,12 +35,7 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
             year = savedInstanceState.getInt("year");
         }
         else{
-//            Calendar calendar = getCalendarFromArguments();
-//            day = calendar.get(Calendar.DAY_OF_MONTH);
-//            month = calendar.get(Calendar.MONTH);
-//            year = calendar.get(Calendar.YEAR);
-
-            LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
+            LocalDate localDate = getCalendarFromArguments();
             day = localDate.getDayOfMonth();
             month = localDate.getMonthValue();
             year = localDate.getYear();
@@ -55,28 +44,33 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
         return new DatePickerDialog(requireActivity(), this, year, month, day);
     }
 
-    private Calendar getCalendarFromArguments() {
+    private LocalDate getCalendarFromArguments() {
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
+//        Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+//        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
         Bundle args = getArguments();
 
-        String dateString = ( args != null ) ?
-                args.getString("date") :
-                dateFormat.format(Calendar.getInstance().getTime());
+//        LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
+//        LocalDate.parse(args.getString("date"));
+//
+//        String dateString = ( args != null ) ?
+//                args.getString("date") :
+//                //dateFormat.format(Calendar.getInstance().getTime());
+//                localDate.toString();
 
-        if (dateString != null) {
-            
-            try {
-                Date date = dateFormat.parse(dateString);
-                calendar.setTime(date != null ? date : new Date());
+//        if (dateString != null) {
+//
+//            try {
+//                Date date = dateFormat.parse(dateString);
+//                calendar.setTime(date != null ? date : new Date());
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-            } catch (ParseException e) {
-                e.printStackTrace();                
-            }            
-        }
-
-        return calendar;
+        return ( args != null ) ?
+                LocalDate.parse(args.getString("date")) : LocalDate.now(ZoneId.systemDefault());
     }
 
     @Override
@@ -86,10 +80,8 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
         Log.d(TAG, "OnSet.   Year = " + year + " month= "+ (month )+" day= " + day);
 
         DialogFragmentListener listener = (DialogFragmentListener) getTargetFragment();
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        calendar.set(year,month,day);
-        String stringDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
-        Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), stringDate);
+        LocalDate localDate = LocalDate.of(year,month,day);
+        Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), localDate.toString());
         Log.d(TAG, "[OnDataSet Method] ---> OUT ");
     }
 
