@@ -41,7 +41,7 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
             year = localDate.getYear();
         }
 
-        return new DatePickerDialog(requireActivity(), this, year, month, day);
+        return new DatePickerDialog(requireActivity(), this, year, month - 1, day);
     }
 
     private LocalDate getCalendarFromArguments() {
@@ -80,7 +80,7 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
         Log.d(TAG, "OnSet.   Year = " + year + " month= "+ (month )+" day= " + day);
 
         DialogFragmentListener listener = (DialogFragmentListener) getTargetFragment();
-        LocalDate localDate = LocalDate.of(year,month,day);
+        LocalDate localDate = LocalDate.of(year,month + 1,day);
         Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), localDate.toString());
         Log.d(TAG, "[OnDataSet Method] ---> OUT ");
     }

@@ -1,5 +1,7 @@
 package com.glebsterd.mytodolist.helpers;
 
+import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.persistance.Event;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -18,15 +22,17 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     private List<Event> events;
     private final OnEventClickListener eventClickListener;
+    private Context context;
 
     public interface OnEventClickListener {
 
         void onEventClick(Event event);
     }
 
-    public EventListAdapter(OnEventClickListener eventClickListener) {
+    public EventListAdapter(OnEventClickListener eventClickListener, Context context) {
 
         this.eventClickListener = eventClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -35,7 +41,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         View eventView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycle_view_item, parent, false);
-        return new EventViewHolder(eventView, eventClickListener);
+        return new EventViewHolder(eventView, eventClickListener, context);
     }
 
     @Override
@@ -66,8 +72,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         private final AppCompatTextView tvDescription;
         private final AppCompatTextView tvTime;
         private final OnEventClickListener eventClickListener;
+        private final Context context;
 
-        EventViewHolder(@NonNull View itemView, OnEventClickListener eventClickListener) {
+        EventViewHolder(@NonNull View itemView, OnEventClickListener eventClickListener, Context context) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tv_date);
             tvTitle = itemView.findViewById(R.id.tv_title);
@@ -75,6 +82,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             tvDescription = itemView.findViewById(R.id.tv_description);
 
             this.eventClickListener = eventClickListener;
+            this.context = context;
             itemView.setOnClickListener(this);
         }
 
@@ -82,12 +90,23 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
             //Log.d(TAG, "SetData Method entrance. Event: " + event);
             tvDate.setText(event.getDate());
-            tvTime.setText(event.getTime());
+            String time = getFormattedTimeFromString(event.getTime());
+            //tvTime.setText(event.getTime());
+            tvTime.setText(time);
             tvTitle.setText(event.getTitle());
             tvDescription.setText(event.getDescription());
         }
 
-        @Override
+         private String getFormattedTimeFromString(String time) {
+
+            DateTimeFormatter timeFormatter = (DateFormat.is24HourFormat(context)) ?
+                    DateTimeFormatter.ofPattern("HH:mm") :
+                    DateTimeFormatter.ofPattern("hh:mm a");
+
+            return LocalTime.parse(time, timeFormatter).toString();
+         }
+
+         @Override
         public void onClick(View v) {
 
             String title = tvTitle.getText().toString();

@@ -75,7 +75,7 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
 
         MainListViewModel listViewModel = parentActivity.getViewModel();
 
-        eventListAdapter = new EventListAdapter(this);
+        eventListAdapter = new EventListAdapter(this, parentActivity);
 
         recyclerView = view.findViewById(R.id.recycle_view);
         recyclerView.setAdapter(eventListAdapter);

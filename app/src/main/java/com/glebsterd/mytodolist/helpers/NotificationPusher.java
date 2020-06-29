@@ -97,6 +97,7 @@ public final class NotificationPusher {
 
                     eventNotificationHour = Integer.parseInt(raw[0]);
                     eventNotificationMinute = Integer.parseInt(raw[1]);
+                    LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
                     String amPm = raw[2];
 
                 }
