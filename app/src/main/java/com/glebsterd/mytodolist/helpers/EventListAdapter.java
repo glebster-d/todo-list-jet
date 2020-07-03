@@ -2,6 +2,7 @@ package com.glebsterd.mytodolist.helpers;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import java.util.List;
 
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
+
+    private static final String TAG = "EventListAdapter";
 
     private List<Event> events;
     private final OnEventClickListener eventClickListener;
@@ -86,7 +89,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             itemView.setOnClickListener(this);
         }
 
-        void setData(Event event){
+        void setData(@NonNull Event event){
 
             //Log.d(TAG, "SetData Method entrance. Event: " + event);
             tvDate.setText(event.getDate());
@@ -97,11 +100,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             tvDescription.setText(event.getDescription());
         }
 
+
          private String getFormattedTimeFromString(String time) {
+
+            Log.d(TAG, "getFormattedTimeFromString: is24 = " + DateFormat.is24HourFormat(context));
+            Log.d(TAG, "getFormattedTimeFromString: time = " + time);
+
 
             DateTimeFormatter timeFormatter = (DateFormat.is24HourFormat(context)) ?
                     DateTimeFormatter.ofPattern("HH:mm") :
                     DateTimeFormatter.ofPattern("hh:mm a");
+
+            String ti  = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME).toString();
 
             return LocalTime.parse(time, timeFormatter).toString();
          }
