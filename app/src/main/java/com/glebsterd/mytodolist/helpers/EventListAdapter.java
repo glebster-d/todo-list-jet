@@ -96,7 +96,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             //Log.d(TAG, "SetData Method entrance. Event: " + event);
             tvDate.setText(event.getDate());
             String time = getFormattedTimeFromString(event.getTime());
-            //tvTime.setText(event.getTime());
             tvTime.setText(time);
             tvTitle.setText(event.getTitle());
             tvDescription.setText(event.getDescription());
@@ -104,20 +103,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         private String getFormattedTimeFromString(String time) {
 
-            String formattedTimeString = "";
-            LocalTime formattedTime;
+            LocalTime formattedTime = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
 
-            if (DateFormat.is24HourFormat(context)) {
-
-                formattedTime = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
-                formattedTimeString = formattedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            }
-            else {
-                formattedTime = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
-                formattedTimeString = formattedTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
-            }
-
-            return formattedTimeString;
+            return (DateFormat.is24HourFormat(context)) ?
+                    formattedTime.format(DateTimeFormatter.ofPattern("HH:mm")):
+                    formattedTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
         }
 
         @Override
