@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.persistance.Event;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -100,23 +102,25 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             tvDescription.setText(event.getDescription());
         }
 
+        private String getFormattedTimeFromString(String time) {
 
-         private String getFormattedTimeFromString(String time) {
+            String formattedTimeString = "";
+            LocalTime formattedTime;
 
-            Log.d(TAG, "getFormattedTimeFromString: is24 = " + DateFormat.is24HourFormat(context));
-            Log.d(TAG, "getFormattedTimeFromString: time = " + time);
+            if (DateFormat.is24HourFormat(context)) {
 
+                formattedTime = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
+                formattedTimeString = formattedTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+            }
+            else {
+                formattedTime = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
+                formattedTimeString = formattedTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+            }
 
-            DateTimeFormatter timeFormatter = (DateFormat.is24HourFormat(context)) ?
-                    DateTimeFormatter.ofPattern("HH:mm") :
-                    DateTimeFormatter.ofPattern("hh:mm a");
+            return formattedTimeString;
+        }
 
-            String ti  = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME).toString();
-
-            return LocalTime.parse(time, timeFormatter).toString();
-         }
-
-         @Override
+        @Override
         public void onClick(View v) {
 
             String title = tvTitle.getText().toString();
