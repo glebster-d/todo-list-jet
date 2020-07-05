@@ -104,6 +104,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             tvDescription.setText(event.getDescription());
         }
 
+        // Convert time string written in different time formats to current time format
         private String getFormattedTimeFromString(String time) {
 
             String formattedTimeString;
