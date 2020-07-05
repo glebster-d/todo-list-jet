@@ -18,7 +18,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
@@ -103,11 +106,31 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         private String getFormattedTimeFromString(String time) {
 
-            LocalTime formattedTime = LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
+            String formattedTimeString;
 
-            return (DateFormat.is24HourFormat(context)) ?
+            Pattern patternOf24HourFormat = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]");
+            Matcher matcherOf24HourFormat = patternOf24HourFormat.matcher(time);
+
+            Pattern patternOf12HourFormat = Pattern.compile("([01][012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)");
+            Matcher matcherOf12HourFormat = patternOf12HourFormat.matcher(time);
+
+            DateTimeFormatter timeFormatter = null;
+
+            if (matcherOf12HourFormat.find()) {
+                Log.d(TAG, "getFormattedTimeFromString: pattern 12");
+                timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+            }
+            else if (matcherOf24HourFormat.find()) {
+                Log.d(TAG, "getFormattedTimeFromString: pattern 24");
+                timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            }
+
+            LocalTime formattedTime = LocalTime.parse(time, timeFormatter);
+            formattedTimeString = (DateFormat.is24HourFormat(context)) ?
                     formattedTime.format(DateTimeFormatter.ofPattern("HH:mm")):
                     formattedTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+
+            return formattedTimeString;
         }
 
         @Override
