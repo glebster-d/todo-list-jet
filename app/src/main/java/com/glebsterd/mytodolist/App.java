@@ -26,7 +26,8 @@ public class App extends Application {
 
         Intent intent = new Intent(this, NotificationService.class);
         startService(intent);
-    }
+
+    }// onCreate
 
     // Set notification channel if api version greater or equals to 26
     private void setNotificationChannels() {

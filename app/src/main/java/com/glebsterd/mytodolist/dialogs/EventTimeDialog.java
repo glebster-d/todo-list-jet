@@ -20,6 +20,8 @@ import java.util.Objects;
 public class EventTimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private static final String TAG = "EventTimeDialog";
+
+    //static final boolean DEBUG = true;
     
     private int hour, minute;
 
@@ -70,7 +72,6 @@ public class EventTimeDialog extends DialogFragment implements TimePickerDialog.
 //        }
 
         DialogFragmentListener listener = (DialogFragmentListener) getTargetFragment();
-//        Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), builder.toString());
         Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), localTime.format(timeFormatter));
     }
 

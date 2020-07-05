@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     private static final String TAG = "MainActivity";
 
+    static final boolean DEBUG = true;
+
     private FloatingActionButton fab;
     private MainListViewModel listViewModel;
 
@@ -38,12 +40,16 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(DEBUG) {
+            Log.d(TAG, "[OnCreate Method] ---> IN");
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Log.d(TAG, "OnCreate Method entrance");
         fab = findViewById(R.id.fab_MainActivity);
 
         // When FAB clicked replace MainListFragment with EventOperationsFragment
@@ -59,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_container, MainListFragment.newInstance(), MainListFragment.class.getSimpleName())
                 .commit();
+
+        if(DEBUG) {
+            Log.d(TAG, "[OnCreate Method] ---> OUT");
+        }
 
     }// onCreate
 
@@ -118,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     }// replaceFragment
 
     /**
-     *
+     * Get a floating action button
      * @return FAB of main activity
      */
     public FloatingActionButton getFab() {
@@ -126,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     }
 
     /**
-     *
+     * Get a view model
      * @return main view model object
      */
     public MainListViewModel getViewModel() {

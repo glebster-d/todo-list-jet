@@ -28,9 +28,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     private static final String TAG = "EventListAdapter";
 
+    private Context context;
     private List<Event> events;
     private final OnEventClickListener eventClickListener;
-    private Context context;
+
 
     public interface OnEventClickListener {
 
@@ -50,7 +51,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         View eventView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycle_view_item, parent, false);
         return new EventViewHolder(eventView, eventClickListener, context);
-    }
+
+    }// onCreateViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
@@ -60,7 +62,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             Event event = events.get(position);
             holder.setData(event);
         }
-    }
+    }// onBindViewHolder
 
     @Override
     public int getItemCount() {
@@ -96,13 +98,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         void setData(@NonNull Event event){
 
-            //Log.d(TAG, "SetData Method entrance. Event: " + event);
             tvDate.setText(event.getDate());
             String time = getFormattedTimeFromString(event.getTime());
             tvTime.setText(time);
             tvTitle.setText(event.getTitle());
             tvDescription.setText(event.getDescription());
-        }
+
+        }// setData
 
         // Convert time string written in different time formats to current time format
         private String getFormattedTimeFromString(String time) {
@@ -132,7 +134,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
                     formattedTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
 
             return formattedTimeString;
-        }
+
+        }// getFormattedTimeFromString
 
         @Override
         public void onClick(View v) {
@@ -144,7 +147,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
             Event event = new Event(date,time,title,description);
             eventClickListener.onEventClick(event);
-        }
+
+        }// onClick
 
     }// EventViewHolder.class
 

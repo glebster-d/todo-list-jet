@@ -28,6 +28,7 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
 
     private static final String TAG = "MainListFragment";
 
+    static final boolean DEBUG = true;
 
     private EventListAdapter eventListAdapter;
     private AppCompatTextView emptyTextView;
@@ -49,10 +50,14 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
      */
     @Override
     public void onAttach(@NonNull Context context) {
-        Log.d(TAG, "[OnAttach Method] ---> IN ");
+        if (DEBUG) {
+            Log.d(TAG, "[OnAttach Method] ---> IN ");
+        }
         super.onAttach(context);
         parentActivity = (MainActivity) context;
-        Log.d(TAG, "[OnAttach Method] ---> OUT ");
+        if (DEBUG) {
+            Log.d(TAG, "[OnAttach Method] ---> OUT ");
+        }
     }
 
     /**
@@ -61,7 +66,9 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "[OnCreateView Method] ---> IN ");
+        if (DEBUG) {
+            Log.d(TAG, "[OnCreateView Method] ---> IN ");
+        }
         return inflater.inflate(R.layout.fragment_main_recycle_view, container, false);
     }
 
@@ -70,7 +77,10 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "[OnViewCreated Method] ---> IN ");
+
+        if (DEBUG) {
+            Log.d(TAG, "[OnViewCreated Method] ---> IN ");
+        }
         super.onViewCreated(view, savedInstanceState);
 
         MainListViewModel listViewModel = parentActivity.getViewModel();
@@ -98,29 +108,38 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
                 eventListAdapter.setEvents(events);
             }
         });
-    }
+    }// onViewCreated
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onResume() {
-        Log.d(TAG, "[OnResume Method] ---> IN ");
+        if (DEBUG) {
+            Log.d(TAG, "[OnResume Method] ---> IN ");
+        }
         super.onResume();
         parentActivity.getFab().show();
-        Log.d(TAG, "[OnResume Method] ---> OUT ");
-    }
+        if (DEBUG ) {
+            Log.d(TAG, "[OnResume Method] ---> OUT ");
+        }
+    }// onResume
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onPause() {
-        Log.d(TAG, "[OnPause Method] ---> IN ");
+        if (DEBUG) {
+            Log.d(TAG, "[OnPause Method] ---> IN ");
+        }
         super.onPause();
         parentActivity.getFab().hide();
-        Log.d(TAG, "[OnPause Method] ---> OUT ");
-    }
+
+        if (DEBUG) {
+            Log.d(TAG, "[OnPause Method] ---> OUT ");
+        }
+    }// onPause
 
     /**
      * {@inheritDoc}
@@ -138,6 +157,7 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         fragment.setArguments(bundle);
 
         parentActivity.replaceFragment(fragment,null);
-    }
+
+    }// onEventClick
 
 }// MainListFragment.class
