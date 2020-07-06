@@ -9,8 +9,8 @@ import androidx.annotation.Nullable;
 import com.glebsterd.mytodolist.helpers.NotificationRunnable;
 
 /**
- * Service that runs every day and checks database enties. If current date and date of entry
- * are the same, service will trigger notification.
+ * Service that starts background thread that runs every minute and checks database entries.
+ * If current date and date of entry are the same, service thread will trigger notification.
  */
 public class NotificationService extends Service {
 
