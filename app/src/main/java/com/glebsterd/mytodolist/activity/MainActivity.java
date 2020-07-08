@@ -1,8 +1,6 @@
 package com.glebsterd.mytodolist.activity;
 
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;

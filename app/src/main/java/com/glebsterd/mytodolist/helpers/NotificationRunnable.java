@@ -9,8 +9,8 @@ public class NotificationRunnable implements Runnable {
 
     static final boolean DEBUG = true;
 
-    private NotificationPusher notificationPusher;
-    private boolean isRunning = false;
+    private volatile boolean isRunning;
+    private final NotificationPusher notificationPusher;
 
     public NotificationRunnable(Application application) {
 
@@ -22,6 +22,8 @@ public class NotificationRunnable implements Runnable {
      */
     @Override
     public void run() {
+
+        isRunning = true;
 
         while (isRunning) {
 
@@ -36,16 +38,16 @@ public class NotificationRunnable implements Runnable {
             Thread.sleep(1000 * 60);
         } catch (InterruptedException e) {
 
+            isRunning = false;
+
             if (DEBUG) {
                 Log.d(TAG, "[GoToSleep] ---> Exception: " + e.getMessage());
             }
         }
-    }
+    }// goToSleep
 
-    public void stop() {
-
-        if (!Thread.interrupted())
-            isRunning = false;
+    public void cancel() {
+        isRunning = false;
     }
 
 }// class

@@ -8,13 +8,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.glebsterd.mytodolist.services.NotificationService;
 
 
 /**
  *
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     /**
      * {@inheritDoc}

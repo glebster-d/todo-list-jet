@@ -14,7 +14,8 @@ import com.glebsterd.mytodolist.helpers.NotificationRunnable;
  */
 public class NotificationService extends Service {
 
-    private Thread notificationThread;
+    private NotificationRunnable notificationRunnable;
+
 
     /**
      * {@inheritDoc}
@@ -22,7 +23,8 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
 
-        notificationThread = new Thread(new NotificationRunnable(getApplication()));
+        notificationRunnable = new NotificationRunnable(getApplication());
+        Thread notificationThread = new Thread(notificationRunnable);
         notificationThread.start();
 
     }// onCreate
@@ -46,4 +48,9 @@ public class NotificationService extends Service {
 
     }// onStartCommand
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        notificationRunnable.cancel();
+    }
 }// class

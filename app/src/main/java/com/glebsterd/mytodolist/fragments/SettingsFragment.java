@@ -141,6 +141,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Cursor cursor = ringtoneManager.getCursor();
         int alarmsCount = cursor.getCount();
 
+
+
         if(alarmsCount == 0 && !cursor.moveToFirst()){
             return null;
         }

@@ -14,7 +14,6 @@ import com.glebsterd.mytodolist.helpers.DialogFragmentListener;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.Objects;
 
 public class EventTimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -18,18 +17,12 @@ import com.glebsterd.mytodolist.activity.MainActivity;
 import com.glebsterd.mytodolist.persistance.Event;
 import com.glebsterd.mytodolist.persistance.EventRepository;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public final class NotificationPusher {
 
@@ -38,8 +31,7 @@ public final class NotificationPusher {
     private static final int NOTIFICATION = 30;
 
     private NotificationManagerCompat notificationManager;
-    private Application application;
-    private LocalTime localTimeNow;
+    private final Application application;
     //private Calendar calendar;
 
     public NotificationPusher(Application application) {
@@ -60,7 +52,7 @@ public final class NotificationPusher {
         //Log.d(TAG, "[StartAlarms] ---> localTime = " + localTime);
         //Log.d(TAG, "[StartAlarms] ---> ZoneId = " + ZoneId.systemDefault());
 
-        localTimeNow = LocalTime.now(ZoneId.systemDefault());
+        LocalTime localTimeNow = LocalTime.now(ZoneId.systemDefault());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
         String[] preferenceReminderTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0 minutes").split(" ");

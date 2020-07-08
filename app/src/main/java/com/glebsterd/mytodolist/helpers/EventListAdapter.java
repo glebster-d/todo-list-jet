@@ -14,11 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.persistance.Event;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +25,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     private static final String TAG = "EventListAdapter";
 
-    private Context context;
+    private final Context context;
     private List<Event> events;
     private final OnEventClickListener eventClickListener;
 
