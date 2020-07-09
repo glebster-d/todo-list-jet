@@ -11,17 +11,9 @@
             app:key="@string/pref_alarm_check_key"
             app:defaultValue="true"/>
 
-<!--        <androidx.preference.Preference-->
-<!--            app:title="@string/pref_alarm_time_title"-->
-<!--            app:summary="@string/pref_alarm_time_summary"-->
-<!--            app:key = "@string/pref_alarm_time_key"-->
-<!--            app:defaultValue="@string/pref_alarm_time_default"-->
-<!--            app:enabled="true"/>-->
-
         <androidx.preference.DropDownPreference
             app:key = "@string/pref_alarm_time_key"
             app:title="@string/pref_alarm_time_title"
-            app:summary="@string/pref_alarm_time_summary"
             app:entryValues="@array/pref_notification_reminder_values"
             app:entries="@array/pref_notification_reminder_values"
             app:defaultValue="@string/pref_alarm_time_0_minutes"
@@ -29,7 +21,6 @@
 
         <androidx.preference.ListPreference
             app:title="@string/pref_alarm_sound_title"
-            app:summary="@string/pref_alarm_sound_summary"
             app:key="@string/pref_alarm_sound_key"
             app:defaultValue="@string/pref_alarm_sound_default"
             app:enabled="true"/>

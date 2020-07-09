@@ -30,8 +30,7 @@ import java.util.Objects;
 public class EventOperationsFragment extends Fragment implements View.OnClickListener, DialogFragmentListener {
 
     private static final String TAG = "EventOperationsFragment";
-    //public static final String ADD = "ADD";
-    //public static final String EDIT = "EDIT";
+
 
 
     private MainActivity parentActivity;

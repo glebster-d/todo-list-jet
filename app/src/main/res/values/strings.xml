@@ -38,16 +38,16 @@
 
 
     // Titles of preference categories
-    <string name="pref_category_alarm_settings_title">Alarm Settings</string>
+    <string name="pref_category_alarm_settings_title">Notification Settings</string>
     <string name="pref_category_about_title">About</string>
 
     // Values for preferences
-    <string name="pref_alarm_check_title">Enable alarm</string>
-    <string name="pref_alarm_check_summary">Enables alarm settings</string>
+    <string name="pref_alarm_check_title">Enable notifications</string>
+    <string name="pref_alarm_check_summary">Enables notification settings</string>
     <string name="pref_alarm_check_key">alarm_enable_check</string>
 
-    <string name="pref_alarm_time_title">Set reminder time</string>
-    <string name="pref_alarm_time_summary">Set reminder time for notification</string>
+    <string name="pref_alarm_time_title">Set notification reminder time</string>
+    <string name="pref_alarm_time_summary">Reminder time:</string>
     <string name="pref_alarm_time_default">5 minutes</string>
     <string name="pref_alarm_time_key">reminder_time</string>
 
@@ -67,7 +67,7 @@
     <string name="pref_alarm_time_60_minutes">60 minutes</string>
 
     <string name="pref_alarm_sound_title">Set notification sound</string>
-    <string name="pref_alarm_sound_summary">Set notification alarm sound</string>
+    <string name="pref_alarm_sound_summary">Notification sound:</string>
     <string name="pref_alarm_sound_default">content://settings/system/notification_sound</string>
     <string name="pref_alarm_sound_key">alarm_sound</string>
 

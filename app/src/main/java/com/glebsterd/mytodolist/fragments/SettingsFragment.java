@@ -27,16 +27,19 @@ import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat
-        implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+        implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "SettingsFragment";
 
-    //private Preference timePreference;
-    private DropDownPreference reminderTime;
+    static final boolean DEBUG = true;
+
+    private DropDownPreference reminderTimePreference;
     private ListPreference ringtonePreference;
     private MainActivity parentActivity;
 
@@ -73,6 +76,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         super.onResume();
         //parentActivity.getFab().hide();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.settings);
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -80,6 +84,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         super.onPause();
         //parentActivity.getFab().show();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.app_name);
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -98,22 +103,35 @@ public class SettingsFragment extends PreferenceFragmentCompat
         boolean isEnabled = PreferenceManager.getDefaultSharedPreferences(requireContext())
                                 .getBoolean(getString(R.string.pref_alarm_check_key), true);
 
-//        timePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_time_key));
-//        Objects.requireNonNull(timePreference).setEnabled(isEnabled);
-//        timePreference.setOnPreferenceClickListener(this);
+        reminderTimePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_time_key));
+        Objects.requireNonNull(reminderTimePreference).setEnabled(isEnabled);
+        //reminderTimePreference.setOnPreferenceClickListener(this);
 
-        reminderTime = getPreferenceManager().findPreference(getString(R.string.pref_alarm_time_key));
-        Objects.requireNonNull(reminderTime).setEnabled(isEnabled);
-        reminderTime.setOnPreferenceClickListener(this);
+        String summary = getSummaryString(R.string.pref_alarm_time_summary, reminderTimePreference.getValue());
+        reminderTimePreference.setSummary(summary);
+
 
         ringtonePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_sound_key));
         Objects.requireNonNull(ringtonePreference).setEnabled(isEnabled);
-        ringtonePreference.setOnPreferenceClickListener(this);
+        //ringtonePreference.setOnPreferenceClickListener(this);
 
         setListPreferenceData(ringtonePreference);
 
+        summary = getSummaryString(R.string.pref_alarm_sound_summary, ringtonePreference.getEntry().toString());
+        ringtonePreference.setSummary(summary);
+
+
+
         CheckBoxPreference alarmEnablePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_check_key));
         Objects.requireNonNull(alarmEnablePreference).setOnPreferenceChangeListener(this);
+    }
+
+    private String getSummaryString(int stringId, String value) {
+        StringBuilder stringBuilder = new StringBuilder();
+        return stringBuilder.append(getString(stringId))
+                .append("\t\t\t")
+                .append(value)
+                .toString();
     }
 
     private void setListPreferenceData(ListPreference ringtonePreference) {
@@ -141,8 +159,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Cursor cursor = ringtoneManager.getCursor();
         int alarmsCount = cursor.getCount();
 
-
-
         if(alarmsCount == 0 && !cursor.moveToFirst()){
             return null;
         }
@@ -162,42 +178,20 @@ public class SettingsFragment extends PreferenceFragmentCompat
         return ringtoneHashMap;
     }
 
-    // -------------------DELETE AFTER TESTING---------------------
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-
-        Log.d(TAG, "onPreferenceClick --> [Preference]: " + preference.getTitle());
-
-        boolean clickHandled = false;
-
-        if(preference.getKey().equals(getString(R.string.pref_alarm_sound_key))){
-
-            String s = PreferenceManager.getDefaultSharedPreferences(requireContext())
-                                        .getString(preference.getKey(), "Empty");
-            Log.d(TAG, "onPreferenceClick --> [Preference]: " + preference.getTitle() + "[Value]: " + s);
-            clickHandled = true;
-        }
-
-        if(preference.getKey().equals(getString(R.string.pref_alarm_time_key))){
-
-            clickHandled = true;
-        }
-
-        return clickHandled;
-    }
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
         boolean preferenceUpdated = false;
 
-        Log.d(TAG, "OnPreferenceChange Method ---> [Preference]: " + preference.getTitle()
+        if(DEBUG) {
+            Log.d(TAG, "OnPreferenceChange Method ---> [Preference]: " + preference.getTitle()
                 + " [Value]: "+ newValue.toString());
+        }
 
         if(preference.getKey().equals(getString(R.string.pref_alarm_check_key))){
 
             ringtonePreference.setEnabled(Boolean.parseBoolean(newValue.toString()));
-            reminderTime.setEnabled(Boolean.parseBoolean(newValue.toString()));
+            reminderTimePreference.setEnabled(Boolean.parseBoolean(newValue.toString()));
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
             sharedPreferences.edit().putBoolean(getString(R.string.pref_alarm_check_key),
                     Boolean.parseBoolean(newValue.toString())).commit();
@@ -208,4 +202,20 @@ public class SettingsFragment extends PreferenceFragmentCompat
         return preferenceUpdated;
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        String newValue, summary;
+
+        if(key.equals(getString(R.string.pref_alarm_time_key))) {
+            newValue = sharedPreferences.getString(key, getString(R.string.pref_alarm_time_default));
+            summary = getSummaryString(R.string.pref_alarm_time_summary, newValue);
+            reminderTimePreference.setSummary(summary);
+        }
+        else if (key.equals(getString(R.string.pref_alarm_sound_key))) {
+
+            summary = getSummaryString(R.string.pref_alarm_sound_summary, ringtonePreference.getEntry().toString());
+            ringtonePreference.setSummary(summary);
+        }
+    }
 }// SettingsFragment.class
