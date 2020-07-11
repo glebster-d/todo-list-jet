@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ *
+ */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
 
     private static final String TAG = "EventListAdapter";
@@ -35,12 +37,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         void onEventClick(Event event);
     }
 
+    /**
+     * Constructor
+     */
     public EventListAdapter(OnEventClickListener eventClickListener, Context context) {
 
         this.eventClickListener = eventClickListener;
         this.context = context;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NonNull
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,6 +59,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     }// onCreateViewHolder
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
 
@@ -61,6 +72,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         }
     }// onBindViewHolder
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getItemCount() {
         return (events == null) ? 0 : events.size();
@@ -92,7 +106,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             itemView.setOnClickListener(this);
         }
 
-        void setData(@NonNull Event event) {
+        private void setData(@NonNull Event event) {
 
             tvDate.setText(event.getDate());
             String time = getFormattedTimeFromString(event.getTime());
@@ -133,6 +147,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         }// getFormattedTimeFromString
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onClick(View v) {
 

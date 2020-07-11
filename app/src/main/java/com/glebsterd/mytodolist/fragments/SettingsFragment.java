@@ -28,11 +28,11 @@ import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
-
+/**
+ *
+ */
 public class SettingsFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -46,11 +46,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     public static SettingsFragment newInstance(){ return new SettingsFragment(); }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,18 +64,27 @@ public class SettingsFragment extends PreferenceFragmentCompat
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.findItem(R.id.action_settings).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -77,6 +92,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPause(){
         super.onPause();
@@ -84,12 +102,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onStop() {
         super.onStop();
         parentActivity = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -128,6 +152,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     }// getSummaryString
 
+    // Setting data to list preference
     private void setListPreferenceData(ListPreference ringtonePreference) {
 
         HashMap<String, Uri> alarms = getSystemAlarmRingtones();
@@ -174,6 +199,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     }// getSystemAlarmRingtones
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
@@ -199,6 +227,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     }// onPreferenceChange
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 

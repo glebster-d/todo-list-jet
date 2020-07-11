@@ -10,10 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.glebsterd.mytodolist.BuildConfig;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.fragments.EventOperationsFragment;
 import com.glebsterd.mytodolist.fragments.MainListFragment;
@@ -24,11 +24,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 /**
  * Main activity for application
  */
-public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
-    static final boolean DEBUG = true;
 
     private FloatingActionButton fab;
     private MainListViewModel listViewModel;
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(DEBUG) {
+        if(BuildConfig.DEBUG) {
             Log.d(TAG, "[OnCreate Method] ---> IN");
         }
 
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                 .add(R.id.main_container, MainListFragment.newInstance(), MainListFragment.class.getSimpleName())
                 .commit();
 
-        if(DEBUG) {
+        if(BuildConfig.DEBUG) {
             Log.d(TAG, "[OnCreate Method] ---> OUT");
         }
 
@@ -98,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     }// onOptionsItemSelected
 
+    /**
+     *
+     * @param replacement
+     * @param tag
+     */
     public void replaceFragment(@NonNull Fragment replacement, @Nullable String tag){
 
         Log.d(TAG, "ReplaceFragment Method before commit");
@@ -119,10 +122,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                 .addToBackStack(tag)
                 .commit();
 
-
-
-        Log.d(TAG, "ReplaceFragment Method after commit");
-
     }// replaceFragment
 
     /**
@@ -141,23 +140,4 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         return listViewModel;
     }
 
-    @Override
-    public void onBackStackChanged() {
-        Log.d(TAG, "onBackStackChanged: ");
-//        try {
-//            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-//                if (fragment != null && fragment.isVisible()) {
-//                    if (fragment.getTag().equals(SettingsFragment.TAG)) {
-//                        setTitle(getString(R.string.settings));
-//                    } else if (fragment.getTag().equals(EventOperationsFragment.TAG)) {
-//                        setTitle(getString(R.string.add_edit_event));
-//                    } else if (fragment.getTag().equals(MainListFragment.TAG)) {
-//                        setTitle(getString(R.string.app_name));
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
 }// MainActivity.class

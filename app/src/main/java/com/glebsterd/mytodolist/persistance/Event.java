@@ -7,6 +7,9 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
+/**
+ *  Event POJO
+ */
 @Entity(tableName = "my_events")
 public class Event {
 

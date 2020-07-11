@@ -5,11 +5,12 @@ import android.util.Log;
 
 import com.glebsterd.mytodolist.BuildConfig;
 
+/**
+ *
+ */
 public class NotificationRunnable implements Runnable {
 
     private static final String TAG = "NotificationRunnable";
-
-    //static final boolean DEBUG = true;
 
     private volatile boolean isRunning;
     private final NotificationPusher notificationPusher;

@@ -8,9 +8,12 @@ import androidx.room.RoomDatabase;
 
 import com.glebsterd.mytodolist.R;
 
-/*
-* No migration strategy added. Must add migration strategy
-* */
+
+// TODO: No migration strategy added. Must add migration strategy
+
+/**
+ * Main database class for storing events
+ */
 @Database(entities = {Event.class}, version = 1, exportSchema = false)
 public abstract class EventDatabase extends RoomDatabase {
 
