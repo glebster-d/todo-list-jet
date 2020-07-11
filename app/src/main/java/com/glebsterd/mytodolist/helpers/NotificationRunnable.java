@@ -3,11 +3,13 @@ package com.glebsterd.mytodolist.helpers;
 import android.app.Application;
 import android.util.Log;
 
+import com.glebsterd.mytodolist.BuildConfig;
+
 public class NotificationRunnable implements Runnable {
 
     private static final String TAG = "NotificationRunnable";
 
-    static final boolean DEBUG = true;
+    //static final boolean DEBUG = true;
 
     private volatile boolean isRunning;
     private final NotificationPusher notificationPusher;
@@ -40,7 +42,7 @@ public class NotificationRunnable implements Runnable {
 
             isRunning = false;
 
-            if (DEBUG) {
+            if (BuildConfig.DEBUG) {
                 Log.d(TAG, "[GoToSleep] ---> Exception: " + e.getMessage());
             }
         }

@@ -54,7 +54,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
 
-        if (events != null){
+        if (events != null) {
 
             Event event = events.get(position);
             holder.setData(event);
@@ -66,13 +66,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         return (events == null) ? 0 : events.size();
     }
 
-    public void setEvents(List<Event> events){
+    public void setEvents(List<Event> events) {
         this.events = events;
         notifyDataSetChanged();
     }
 
-
-     static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final AppCompatTextView tvTitle;
         private final AppCompatTextView tvDate;
@@ -93,7 +92,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             itemView.setOnClickListener(this);
         }
 
-        void setData(@NonNull Event event){
+        void setData(@NonNull Event event) {
 
             tvDate.setText(event.getDate());
             String time = getFormattedTimeFromString(event.getTime());

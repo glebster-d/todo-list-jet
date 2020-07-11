@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
+import com.glebsterd.mytodolist.BuildConfig;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
 import com.glebsterd.mytodolist.dialogs.EventDateDialog;
@@ -30,8 +31,6 @@ import java.util.Objects;
 public class EventOperationsFragment extends Fragment implements View.OnClickListener, DialogFragmentListener {
 
     private static final String TAG = "EventOperationsFragment";
-
-
 
     private MainActivity parentActivity;
     private AppCompatEditText etTitle, etDescription;
@@ -51,42 +50,56 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onAttach(@NonNull Context context) {
-        Log.d(TAG, "[OnAttach Method] ---> IN ");
+        if(BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnAttach Method] ---> IN ");
+        }
         super.onAttach(context);
-
         parentActivity = (MainActivity) context;
-        Log.d(TAG, "[OnAttach Method] ---> OUT ");
-    }
+
+        if(BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnAttach Method] ---> OUT ");
+        }
+    }// onAttach
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
+
+    }// onCreate
 
     @Override
     public void onResume() {
+
         super.onResume();
         String title = (mode == OperationMode.ADD) ?
                 getString(R.string.fragment_add_title) : getString(R.string.fragment_edit_title);
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(title);
-    }
+
+    }// onResume
 
     @Override
     public void onPause() {
+
         super.onPause();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.app_name);
-    }
+
+    }// onPause
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         menu.findItem(R.id.action_settings).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
-    }
+
+    }// onCreateOptionsMenu
 
     private void restoreViewData(Bundle savedInstanceState) {
 
-        Log.d(TAG, "[RestoreViewData Method] ---> IN ");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[RestoreViewData Method] ---> IN ");
+        }
 
         title = savedInstanceState.getString("title");
         description = savedInstanceState.getString("description");
@@ -98,21 +111,30 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         etTime.setText(time);
         etDate.setText(date);
 
-        Log.d(TAG, "[RestoreViewData Method] ---> OUT ");
-    }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[RestoreViewData Method] ---> OUT ");
+        }
+    }// restoreViewData
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d(TAG, "[OnCreateView Method] ---> IN");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnCreateView Method] ---> IN");
+        }
+
         return inflater.inflate(R.layout.fragment_event_operations, container, false);
-    }
+
+    }// onCreateView
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        Log.d(TAG, "[OnViewCreated Method] ---> IN");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnViewCreated Method] ---> IN");
+        }
+
         super.onViewCreated(view, savedInstanceState);
         adjustViews(view);
 
@@ -129,24 +151,36 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
             restoreViewData(args);
         }
 
-        Log.d(TAG, "[OnViewCreated Method] ---> OUT");
-    }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnViewCreated Method] ---> OUT");
+        }
+
+    }// onViewCreated
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        Log.d(TAG, "[OnSaveInstanceState Method] ---> IN ");
+
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnSaveInstanceState Method] ---> IN ");
+        }
         super.onSaveInstanceState(outState);
 
         if(title != null){ outState.putString("title", title); }
         if(description != null){ outState.putString("description", description); }
         if(date != null){ outState.putString("date", date); }
         if(time != null){ outState.putString("time", time); }
-        Log.d(TAG, "[OnSaveInstanceState Method] ---> OUT ");
-    }
+
+        if(BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnSaveInstanceState Method] ---> OUT ");
+        }
+    }// onSaveInstanceState
 
     @Override
     public void onClick(View view) {
-        Log.d(TAG, "[OnClick Method] ---> IN ");
+
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnClick Method] ---> IN ");
+        }
 
         switch(view.getId()){
 
@@ -179,18 +213,22 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
                 break;
 
         }
-        Log.d(TAG, "[OnClick Method] ---> OUT ");
-    }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnClick Method] ---> OUT ");
+        }
+
+    }// onClick
 
     private void savingNewEvent(View view) {
 
-        Log.d(TAG, "[SavingNewEvent Method] ---> IN ");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[SavingNewEvent Method] ---> IN ");
+        }
+
         String date = etDate.getText().toString();
         String time = etTime.getText().toString();
         String title = Objects.requireNonNull(etTitle.getText()).toString();
         String description = Objects.requireNonNull(etDescription.getText()).toString();
-
-        Log.d(TAG, "[SavingNewEvent Method] ---> [title]: " + title);
 
         if (isValidEventInput(title, date, time)) {
             saveEvent(title, date, time, description);
@@ -199,8 +237,11 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
             Toast.makeText(parentActivity, getString(R.string.cannot_save_empty_event), Toast.LENGTH_SHORT).show();
         }
 
-        Log.d(TAG, "[SavingNewEvent Method] ---> OUT ");
-    }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[SavingNewEvent Method] ---> OUT ");
+        }
+
+    }// savingNewEvent
 
     private void saveEvent(String title, String date, String time, String description) {
 
@@ -218,7 +259,7 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
                 Toast.makeText(parentActivity, getString(R.string.event_was_updated), Toast.LENGTH_LONG).show();
                 break;
         }
-    }
+    }// saveEvent
 
     private boolean isValidEventInput(String title, String date, String time) {
         return !time.trim().isEmpty() && !date.trim().isEmpty() && !title.trim().isEmpty();
@@ -238,7 +279,8 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         btnSave.setOnClickListener(this::savingNewEvent);
         AppCompatButton btnCancel = view.findViewById(R.id.btn_Cancel);
         btnCancel.setOnClickListener(v -> parentActivity.onBackPressed());
-    }
+
+    }// adjustViews
 
     @Override
     public void onFinishEditingDialog(@NonNull String dialogName, @NonNull String data) {
@@ -253,6 +295,6 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
                 etDate.setText(data);
                 break;
         }
-    }
+    }// onFinishEditingDialog
 
 }// EventOperationsFragment.class
