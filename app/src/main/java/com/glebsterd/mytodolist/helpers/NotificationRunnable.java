@@ -15,6 +15,10 @@ public class NotificationRunnable implements Runnable {
     private volatile boolean isRunning;
     private final NotificationPusher notificationPusher;
 
+    /**
+     * Constructor
+     * @param application application context
+     */
     public NotificationRunnable(Application application) {
 
         notificationPusher = new NotificationPusher(application);
@@ -30,7 +34,7 @@ public class NotificationRunnable implements Runnable {
 
         while (isRunning) {
 
-            notificationPusher.startAlarms();
+            notificationPusher.pushNotifications();
             goToSleep();
         }
     }// run

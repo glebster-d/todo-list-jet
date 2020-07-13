@@ -23,7 +23,7 @@ public interface EventDao {
     LiveData<List<Event>> getAllEvents();
 
     @Query("SELECT * FROM my_events WHERE event_date=:date")
-    LiveData<List<Event>> getAllEventsSortedByDate(@NonNull String date);
+    List<Event> getAllEventsSortedByDate(@NonNull String date);
 
     @Update
     void updateEvent(@NonNull Event event);

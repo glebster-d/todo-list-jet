@@ -48,7 +48,7 @@ public class EventRepository {
         return eventsList;
     }
 
-    public LiveData<List<Event>> getAllEventsSortedByDate(@NonNull String date) {
+    public List<Event> getAllEventsSortedByDate(@NonNull String date) {
 
         return eventDao.getAllEventsSortedByDate(date);
     }

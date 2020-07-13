@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -20,10 +19,13 @@ import com.glebsterd.mytodolist.persistance.EventRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ *
+ */
 public final class NotificationPusher {
 
     private static final String TAG = "NotificationPusher";
@@ -32,71 +34,104 @@ public final class NotificationPusher {
 
     private NotificationManagerCompat notificationManager;
     private final Application application;
-    //private Calendar calendar;
+    private List<Event> eventList;
+    private String dateNow = "";
 
+
+    /**
+     * Constructor
+     * @param application application context
+     */
     public NotificationPusher(Application application) {
         this.application = application;
     }
 
-    public final void startAlarms() {
+    public final void pushNotifications() {
 
         notificationManager = NotificationManagerCompat.from(application);
         EventRepository eventRepository = new EventRepository(application);
-        //calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-        //String dateNow = java.text.DateFormat.getDateInstance().format(calendar.getTime());
-        //String localDate = LocalDate.now().toString();
-        //String localTime = LocalTime.now(ZoneId.systemDefault()).toString();
-
-        //Log.d(TAG, "[StartAlarms] ---> dateFormat = " + dateNow);
-        //Log.d(TAG, "[StartAlarms] ---> localDate = " + localDate);
-        //Log.d(TAG, "[StartAlarms] ---> localTime = " + localTime);
-        //Log.d(TAG, "[StartAlarms] ---> ZoneId = " + ZoneId.systemDefault());
 
         LocalTime localTimeNow = LocalTime.now(ZoneId.systemDefault());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
-        String[] preferenceReminderTime = pref.getString(application.getResources().getString(R.string.pref_alarm_time_key), "0 minutes").split(" ");
+        String[] preferenceReminderTime =
+                Objects.requireNonNull(pref.getString(application.getResources()
+                        .getString(R.string.pref_alarm_time_key), "0 minutes"))
+                        .split(" ");
 
         String localDate = LocalDate.now().toString();
-        List<Event> eventList = eventRepository.getAllEventsSortedByDate(localDate).getValue();
+
+        if (!dateNow.equals(localDate)) {
+            dateNow = localDate;
+            eventList = eventRepository.getAllEventsSortedByDate(localDate);
+        }
 
         if (eventList != null) {
 
             for (Event event: eventList) {
 
-                int eventNotificationHour , eventNotificationMinute;
-                String [] raw = event.getTime().split("[: ]+");
+                LocalTime eventTime = getFormattedEventTime(event.getTime());
+                long duration = ChronoUnit.MINUTES.between(eventTime, localTimeNow);
+                int prefTime = Integer.parseInt(preferenceReminderTime[0]);
 
-                if(DateFormat.is24HourFormat(application)) {
-
-                    eventNotificationHour = Integer.parseInt(raw[0]);
-                    eventNotificationMinute = Integer.parseInt(raw[1]);
-
-                    int prefTime = Integer.parseInt(preferenceReminderTime[0]);
-
-                    LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
-                    long duration = ChronoUnit.MINUTES.between(eventTime, localTimeNow);
-
-                    if (duration == prefTime) {
+                if (duration == prefTime) {
                         createNotification(event);
-                    }
                 }
-                else {
 
-                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
 
-                    //DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern("hh:mm a", DateTimeFormatter.)
+//                int eventNotificationHour , eventNotificationMinute;
+//                String [] raw = event.getTime().split("[: ]+");
+//
+//                if (raw.length == 3) {
+//                    Log.d(TAG, "pushNotifications: raw = 3");
+//
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+//                    LocalTime time = LocalTime.parse(event.getTime(), formatter);
+//
+//
+//                }
+//                else {
+//                    Log.d(TAG, "pushNotifications: not raw = " + raw.length);
+//                }
 
-                    eventNotificationHour = Integer.parseInt(raw[0]);
-                    eventNotificationMinute = Integer.parseInt(raw[1]);
-                    LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
-                    String amPm = raw[2];
-
-                }
-            }
+//                if(DateFormat.is24HourFormat(application)) {
+//
+//                    eventNotificationHour = Integer.parseInt(raw[0]);
+//                    eventNotificationMinute = Integer.parseInt(raw[1]);
+//
+//                    int prefTime = Integer.parseInt(preferenceReminderTime[0]);
+//
+//                    LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
+//                    long duration = ChronoUnit.MINUTES.between(eventTime, localTimeNow);
+//
+//                    if (duration == prefTime) {
+//                        createNotification(event);
+//                    }
+//                }
+//                else {
+//
+//                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+//
+//                    //DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder().appendPattern("hh:mm a", DateTimeFormatter.)
+//
+//                    eventNotificationHour = Integer.parseInt(raw[0]);
+//                    eventNotificationMinute = Integer.parseInt(raw[1]);
+//                    LocalTime eventTime = LocalTime.of(eventNotificationHour, eventNotificationMinute);
+//                    String amPm = raw[2];
+//
+//                }
+            }// foreach
         }
 
     }// startAlarms
+
+    private LocalTime getFormattedEventTime(String time) {
+
+        LocalTime eventTime = null;
+
+
+        return  eventTime;
+    }
 
 //    private void setNotificationAlarmTime() {
 //
