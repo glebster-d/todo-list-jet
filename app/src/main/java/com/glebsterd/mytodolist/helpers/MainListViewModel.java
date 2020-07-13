@@ -1,7 +1,6 @@
 package com.glebsterd.mytodolist.helpers;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,8 +15,6 @@ import java.util.List;
  *  ViewModel of application
  */
 public class MainListViewModel extends AndroidViewModel {
-
-    private static final String TAG = "MainListViewModel";
 
     private final EventRepository repository;
     private final LiveData<List<Event>> eventListLiveData;

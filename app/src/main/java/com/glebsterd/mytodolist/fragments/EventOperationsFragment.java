@@ -117,7 +117,7 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
     }// restoreViewData
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         if (BuildConfig.DEBUG) {

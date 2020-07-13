@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -93,14 +92,12 @@ public final class NotificationPusher {
     private LocalTime getFormattedEventTime(String time) {
 
         DateTimeFormatter timeFormatter = null;
-        LocalTime eventTime = null;
 
         Pattern patter24HourFormat = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]");
         Matcher matcher24HourFormat = patter24HourFormat.matcher(time);
 
         Pattern pattern12HourFormat = Pattern.compile("([01][012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)");
         Matcher matcher12HourFormat = pattern12HourFormat.matcher(time);
-
 
         if(matcher12HourFormat.find()) {
             timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
@@ -112,23 +109,6 @@ public final class NotificationPusher {
         return  LocalTime.parse(time, timeFormatter);
 
     }// getFormattedEventTime
-
-//    private void setNotificationAlarmTime() {
-//
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
-//        String alarmTime = preferences.getString(application.getString(R.string.pref_alarm_time_key), " ");
-//        EventRepository repository = new EventRepository(application);
-//        repository.getAllEventsSortedByDate(Calendar.getInstance().getTime().toString());
-//
-//        if (DateFormat.is24HourFormat(application)) {
-//            String[] rawTime = alarmTime.split("[: ]+");
-//
-//        }
-//        else {
-//
-//        }
-//    }// setNotificationAlarmTime
-
 
     // Method iterate through the list of entries and create notifications for them
     private void createNotification(@NonNull Event event, int notificationCounter) {
@@ -142,7 +122,7 @@ public final class NotificationPusher {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
 
-        // If this is a first notification, create notification summary with first notificaton
+        // If this is a first notification, create notification summary with first notification
         if (notificationCounter == 0) {
 
             // Set notification summary group

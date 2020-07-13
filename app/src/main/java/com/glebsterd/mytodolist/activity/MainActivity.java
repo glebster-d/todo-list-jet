@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
     }// onOptionsItemSelected
 
     /**
-     *
-     * @param replacement
+     * Replace current fragment with another
+     * @param replacement new fragment
      * @param tag
      */
     public void replaceFragment(@NonNull Fragment replacement, @Nullable String tag){

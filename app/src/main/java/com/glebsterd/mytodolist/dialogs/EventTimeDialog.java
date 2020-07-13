@@ -16,14 +16,16 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/**
+ * Dialog that create TimePicker
+ */
 public class EventTimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    private static final String TAG = "EventTimeDialog";
-
-    //static final boolean DEBUG = true;
-    
     private int hour, minute;
 
+    /**
+     * {@inheritDoc}
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -36,8 +38,12 @@ public class EventTimeDialog extends DialogFragment implements TimePickerDialog.
 
         return new TimePickerDialog(getActivity(),this,
                 hour, minute, DateFormat.is24HourFormat(getActivity()));
-    }
 
+    }// onCreateDialog
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
 
@@ -47,38 +53,21 @@ public class EventTimeDialog extends DialogFragment implements TimePickerDialog.
                 DateTimeFormatter.ofPattern("HH:mm"):
                 DateTimeFormatter.ofPattern("hh:mm a");
 
-
-//        String AM_PM = null;
-//
-//        // Converting 24 hrs format to 12 hrs
-//        if(!timePicker.is24HourView()) {
-//
-//            AM_PM = "AM";
-//            if (hourOfDay > 11) {
-//                AM_PM = "PM";
-//                hourOfDay = hourOfDay - 12;
-//            }
-//        }
-//
-//        StringBuilder builder = new StringBuilder();
-//        builder.append(String.format(Locale.getDefault(),"%02d", hourOfDay));
-//        builder.append(":");
-//        builder.append(String.format(Locale.getDefault(),"%02d", minute));
-//
-//        if (AM_PM != null) {
-//            builder.append(" ");
-//            builder.append(AM_PM);
-//        }
-
         DialogFragmentListener listener = (DialogFragmentListener) getTargetFragment();
         Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), localTime.format(timeFormatter));
-    }
 
+    }// onTimeSet
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+
         super.onSaveInstanceState(outState);
         outState.putInt("hour", hour);
         outState.putInt("minute", minute);
-    }
+
+    }// onSaveInstanceState
 
 }// EventTimeDialog.class
