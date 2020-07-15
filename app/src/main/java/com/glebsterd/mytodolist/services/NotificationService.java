@@ -3,9 +3,11 @@ package com.glebsterd.mytodolist.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.glebsterd.mytodolist.BuildConfig;
 import com.glebsterd.mytodolist.helpers.NotificationRunnable;
 
 /**
@@ -13,6 +15,8 @@ import com.glebsterd.mytodolist.helpers.NotificationRunnable;
  * If current date and date of entry are the same, service thread will trigger notification.
  */
 public class NotificationService extends Service {
+
+    private static final String TAG = "NotificationService";
 
     private NotificationRunnable notificationRunnable;
 
@@ -23,9 +27,17 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
 
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnCreate] ---> IN ");
+        }
+
         notificationRunnable = new NotificationRunnable(getApplication());
         Thread notificationThread = new Thread(notificationRunnable);
         notificationThread.start();
+
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "[OnCreate] ---> OUT ");
+        }
 
     }// onCreate
 

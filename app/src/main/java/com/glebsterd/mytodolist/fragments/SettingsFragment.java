@@ -2,6 +2,7 @@ package com.glebsterd.mytodolist.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.RingtoneManager;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.DropDownPreference;
 import androidx.preference.ListPreference;
@@ -31,12 +33,13 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- *
+ * Fragment for application settings
  */
 public class SettingsFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "SettingsFragment";
+    public static final String BROADCAST_ACTION = "com.glebsterd.mytodolist.SETTINGS_CHANGED";
 
     private DropDownPreference reminderTimePreference;
     private ListPreference ringtonePreference;
@@ -208,7 +211,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         boolean preferenceUpdated = false;
 
         if(BuildConfig.DEBUG) {
-            Log.d(TAG, "OnPreferenceChange Method ---> [Preference]: " + preference.getTitle()
+            Log.d(TAG, "[OnPreferenceChange Method] ---> [Preference]: " + preference.getTitle()
                 + " [Value]: "+ newValue.toString());
         }
 
@@ -219,6 +222,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
             sharedPreferences.edit().putBoolean(getString(R.string.pref_alarm_check_key),
                     Boolean.parseBoolean(newValue.toString())).apply();
+
+            Intent intent = new Intent();
+            intent.setAction(BROADCAST_ACTION);
+            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent);
 
             preferenceUpdated = true;
         }
