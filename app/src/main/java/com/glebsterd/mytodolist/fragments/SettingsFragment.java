@@ -2,6 +2,7 @@ package com.glebsterd.mytodolist.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.RingtoneManager;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.multidex.BuildConfig;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.DropDownPreference;
 import androidx.preference.ListPreference;
@@ -23,9 +25,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import com.glebsterd.mytodolist.BuildConfig;
+;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
+import com.glebsterd.mytodolist.receivers.ServiceStarterReceiver;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -37,6 +40,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "SettingsFragment";
+
+    public static final String BROADCAST_ACTION = "com.glebsterd.mytodolist.SETTINGS_CHANGED";
 
     private DropDownPreference reminderTimePreference;
     private ListPreference ringtonePreference;
@@ -219,6 +224,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
             sharedPreferences.edit().putBoolean(getString(R.string.pref_alarm_check_key),
                     Boolean.parseBoolean(newValue.toString())).apply();
+
+            Intent intent = new Intent(requireContext(), ServiceStarterReceiver.class);
+            intent.setAction(BROADCAST_ACTION);
+            getActivity().sendBroadcast(intent);
 
             preferenceUpdated = true;
         }

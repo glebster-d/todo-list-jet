@@ -31,11 +31,12 @@
             android:enabled="true"
             android:exported="false" />
         <receiver
-            android:name=".receivers.NotificationServiceStarterAfterBootReceiver"
+            android:name=".receivers.ServiceStarterReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.glebsterd.mytodolist.SETTINGS_CHANGED"/>
             </intent-filter>
         </receiver>
 

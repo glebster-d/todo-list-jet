@@ -11,7 +11,9 @@ import java.util.Objects;
 /**
  * Start notification service after system boot
  */
-public class NotificationServiceStarterAfterBootReceiver extends BroadcastReceiver {
+public class ServiceStarterReceiver extends BroadcastReceiver {
+
+    private static final String TAG = "ServiceStarterReceiver";
 
     /**
      * {@inheritDoc}

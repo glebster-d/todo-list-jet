@@ -3,7 +3,12 @@ package com.glebsterd.mytodolist.helpers;
 import android.app.Application;
 import android.util.Log;
 
-import com.glebsterd.mytodolist.BuildConfig;
+
+import androidx.multidex.BuildConfig;
+import androidx.preference.PreferenceManager;
+
+
+import com.glebsterd.mytodolist.R;
 
 /**
  *
@@ -21,6 +26,8 @@ public class NotificationRunnable implements Runnable {
      */
     public NotificationRunnable(Application application) {
 
+        isRunning = PreferenceManager.getDefaultSharedPreferences(application)
+                .getBoolean(application.getString(R.string.pref_alarm_check_key), false);
         notificationPusher = new NotificationPusher(application);
     }
 
@@ -30,7 +37,7 @@ public class NotificationRunnable implements Runnable {
     @Override
     public void run() {
 
-        isRunning = true;
+        //isRunning = true;
 
         while (isRunning) {
 
