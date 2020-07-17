@@ -37,13 +37,16 @@ public class NotificationRunnable implements Runnable {
     @Override
     public void run() {
 
+        Log.d(TAG, "[Run] ---> IN");
         //isRunning = true;
 
         while (isRunning) {
-
+            Log.d(TAG, "[Run] ---> [While-Loop]");
             notificationPusher.pushNotifications();
             goToSleep();
         }
+
+        Log.d(TAG, "[Run] ---> OUT");
     }// run
 
     private void goToSleep() {

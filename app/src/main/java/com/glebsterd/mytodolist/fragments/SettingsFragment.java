@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.multidex.BuildConfig;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.DropDownPreference;
 import androidx.preference.ListPreference;
@@ -212,10 +211,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         boolean preferenceUpdated = false;
 
-        if(BuildConfig.DEBUG) {
-            Log.d(TAG, "OnPreferenceChange Method ---> [Preference]: " + preference.getTitle()
+        Log.d(TAG, "OnPreferenceChange Method ---> [Preference]: " + preference.getTitle()
                 + " [Value]: "+ newValue.toString());
-        }
 
         if(preference.getKey().equals(getString(R.string.pref_alarm_check_key))){
 
