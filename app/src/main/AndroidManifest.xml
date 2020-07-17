@@ -36,7 +36,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.glebsterd.mytodolist.SETTINGS_CHANGED"/>
+                <action android:name="com.glebsterd.mytodolist.SETTINGS_CHANGED" />
+                <action android:name="com.glebsterd.mytodolist.START_APPLICATION" />
             </intent-filter>
         </receiver>
 

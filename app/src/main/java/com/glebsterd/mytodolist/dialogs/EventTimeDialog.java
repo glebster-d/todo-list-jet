@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
- * Dialog that create TimePicker
+ * Dialog that creates TimePicker
  */
 public class EventTimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 

@@ -27,8 +27,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     private static final String TAG = "EventListAdapter";
 
-    private final Context context;
     private List<Event> events;
+    private final Context context;
     private final OnEventClickListener eventClickListener;
 
 
@@ -130,11 +130,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             DateTimeFormatter timeFormatter = null;
 
             if (matcherOf12HourFormat.find()) {
-                Log.d(TAG, "getFormattedTimeFromString: pattern 12");
+                Log.d(TAG, "[GetFormattedTimeFromString] ---> Pattern 12-hour");
                 timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
             }
             else if (matcherOf24HourFormat.find()) {
-                Log.d(TAG, "getFormattedTimeFromString: pattern 24");
+                Log.d(TAG, "[GetFormattedTimeFromString] ---> Pattern 24-hour");
                 timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
             }
 

@@ -23,12 +23,12 @@ import com.glebsterd.mytodolist.helpers.MainListViewModel;
 import com.glebsterd.mytodolist.helpers.OperationMode;
 import com.glebsterd.mytodolist.persistance.Event;
 
-
+/**
+ * Main fragment with events list
+ */
 public class MainListFragment extends Fragment implements EventListAdapter.OnEventClickListener{
 
     private static final String TAG = "MainListFragment";
-
-    static final boolean DEBUG = true;
 
     private EventListAdapter eventListAdapter;
     private AppCompatTextView emptyTextView;
@@ -36,11 +36,18 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
     private RecyclerView recyclerView;
     private MainActivity parentActivity;
 
-
+    /**
+     * Constructor
+     */
     public MainListFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Get an instance of MainListFragment
+     *
+     * @return instance of this fragment
+     */
     public static MainListFragment newInstance() {
         return new MainListFragment();
     }
@@ -50,15 +57,15 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
      */
     @Override
     public void onAttach(@NonNull Context context) {
-        if (DEBUG) {
-            Log.d(TAG, "[OnAttach Method] ---> IN ");
-        }
+
+        Log.d(TAG, "[OnAttach] ---> IN");
+
         super.onAttach(context);
         parentActivity = (MainActivity) context;
-        if (DEBUG) {
-            Log.d(TAG, "[OnAttach Method] ---> OUT ");
-        }
-    }
+
+        Log.d(TAG, "[OnAttach] ---> OUT");
+
+    }// onAttach
 
     /**
      * {@inheritDoc}
@@ -66,11 +73,11 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (DEBUG) {
-            Log.d(TAG, "[OnCreateView Method] ---> IN ");
-        }
+
+        Log.d(TAG, "[OnCreateView] ---> IN");
         return inflater.inflate(R.layout.fragment_main_recycle_view, container, false);
-    }
+
+    }// onCreateView
 
     /**
      * {@inheritDoc}
@@ -78,9 +85,8 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        if (DEBUG) {
-            Log.d(TAG, "[OnViewCreated Method] ---> IN ");
-        }
+        Log.d(TAG, "[OnViewCreated] ---> IN");
+
         super.onViewCreated(view, savedInstanceState);
 
         MainListViewModel listViewModel = parentActivity.getViewModel();
@@ -115,14 +121,14 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
      */
     @Override
     public void onResume() {
-        if (DEBUG) {
-            Log.d(TAG, "[OnResume Method] ---> IN ");
-        }
+
+        Log.d(TAG, "[OnResume] ---> IN");
+
         super.onResume();
         parentActivity.getFab().show();
-        if (DEBUG ) {
-            Log.d(TAG, "[OnResume Method] ---> OUT ");
-        }
+
+        Log.d(TAG, "[OnResume] ---> OUT");
+
     }// onResume
 
     /**
@@ -130,15 +136,14 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
      */
     @Override
     public void onPause() {
-        if (DEBUG) {
-            Log.d(TAG, "[OnPause Method] ---> IN ");
-        }
+
+        Log.d(TAG, "[OnPause] ---> IN");
+
         super.onPause();
         parentActivity.getFab().hide();
 
-        if (DEBUG) {
-            Log.d(TAG, "[OnPause Method] ---> OUT ");
-        }
+        Log.d(TAG, "[OnPause] ---> OUT");
+
     }// onPause
 
     /**

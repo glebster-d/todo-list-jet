@@ -46,6 +46,7 @@ public final class NotificationPusher {
      * @param application application context
      */
     public NotificationPusher(Application application) {
+
         this.application = application;
     }
 
@@ -86,7 +87,6 @@ public final class NotificationPusher {
 
             }// foreach
         }
-
     }// startAlarms
 
     private LocalTime getFormattedEventTime(String time) {
@@ -179,7 +179,6 @@ public final class NotificationPusher {
 
             notificationManager.notify(NOTIFICATION + notificationCounter, notificationBuilder.build());
         }
-
     }// createNotification
 
 }// class

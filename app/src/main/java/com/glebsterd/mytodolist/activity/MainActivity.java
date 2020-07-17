@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-import com.glebsterd.mytodolist.BuildConfig;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.fragments.EventOperationsFragment;
 import com.glebsterd.mytodolist.fragments.MainListFragment;
@@ -37,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(BuildConfig.DEBUG) {
-            Log.d(TAG, "[OnCreate Method] ---> IN");
-        }
+        Log.d(TAG, "[OnCreate Method] ---> IN");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -62,9 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.main_container, MainListFragment.newInstance(), MainListFragment.class.getSimpleName())
                 .commit();
 
-        if(BuildConfig.DEBUG) {
-            Log.d(TAG, "[OnCreate Method] ---> OUT");
-        }
+        Log.d(TAG, "[OnCreate Method] ---> OUT");
 
     }// onCreate
 
@@ -99,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Replace current fragment with another
      * @param replacement new fragment
-     * @param tag
+     * @param tag fragment tag string for back stack or null
      */
     public void replaceFragment(@NonNull Fragment replacement, @Nullable String tag){
 
-        Log.d(TAG, "ReplaceFragment Method before commit");
+        Log.d(TAG, "[ReplaceFragment] ---> IN");
 //
 //        if (tag.equals(SettingsFragment.class.getSimpleName())) {
 //

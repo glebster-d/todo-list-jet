@@ -24,7 +24,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
 import com.glebsterd.mytodolist.receivers.ServiceStarterReceiver;
@@ -33,22 +32,34 @@ import java.util.HashMap;
 import java.util.Objects;
 
 /**
- *
+ * Fragment with application settings
  */
 public class SettingsFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "SettingsFragment";
 
-    public static final String BROADCAST_ACTION = "com.glebsterd.mytodolist.SETTINGS_CHANGED";
+    private static final String BROADCAST_ACTION = "com.glebsterd.mytodolist.SETTINGS_CHANGED";
 
     private DropDownPreference reminderTimePreference;
     private ListPreference ringtonePreference;
     private MainActivity parentActivity;
 
-    public SettingsFragment() {}
+    /**
+     * Constructor
+     */
+    public SettingsFragment() {
+        // Required empty public constructor
+    }
 
-    public static SettingsFragment newInstance(){ return new SettingsFragment(); }
+    /**
+     * Get an instance of SettingsFragment
+     *
+     * @return instance of this fragment
+     */
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
+    }
 
     /**
      * {@inheritDoc}
@@ -66,63 +77,76 @@ public class SettingsFragment extends PreferenceFragmentCompat
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         adjustPreferences();
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
+
+    }// onCreateView
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
+
+    }// onCreate
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
         menu.findItem(R.id.action_settings).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
-    }
+
+    }// onCreateOptionsMenu
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onResume() {
+
         super.onResume();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.settings);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-    }
+
+    }// onResume
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onPause(){
+
         super.onPause();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.app_name);
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-    }
+
+    }// onPause
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onStop() {
+
         super.onStop();
         parentActivity = null;
-    }
+
+    }// onStop
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onAttach(@NonNull Context context) {
+
         super.onAttach(context);
         parentActivity = (MainActivity) context;
-    }
+
+    }// onAttach
 
     private void adjustPreferences() {
         boolean isEnabled = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -211,7 +235,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         boolean preferenceUpdated = false;
 
-        Log.d(TAG, "OnPreferenceChange Method ---> [Preference]: " + preference.getTitle()
+        Log.d(TAG, "[OnPreferenceChange] ---> [Preference]: " + preference.getTitle()
                 + " [Value]: "+ newValue.toString());
 
         if(preference.getKey().equals(getString(R.string.pref_alarm_check_key))){
@@ -224,7 +248,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
             Intent intent = new Intent(requireContext(), ServiceStarterReceiver.class);
             intent.setAction(BROADCAST_ACTION);
-            getActivity().sendBroadcast(intent);
+            requireActivity().sendBroadcast(intent);
 
             preferenceUpdated = true;
         }
