@@ -10,10 +10,8 @@ import androidx.preference.PreferenceManager;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.services.NotificationService;
 
-import java.util.Objects;
-
 /**
- * Start notification service after system boot
+ * Start or stop notification service
  */
 public class ServiceStarterReceiver extends BroadcastReceiver {
 
@@ -28,22 +26,13 @@ public class ServiceStarterReceiver extends BroadcastReceiver {
         boolean isChecked = PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(context.getString(R.string.pref_alarm_check_key), false);
 
-        Log.d(TAG, "[OnReceive] ---> isChecked = " + isChecked);
+        Log.d(TAG, "[OnReceive] ---> [isChecked]: " + isChecked);
 
-        if (Objects.equals(intent.getAction(), "android.intent.action.BOOT_COMPLETED")) {
-
-            if (isChecked) {
-                context.startService(new Intent(context, NotificationService.class));
-            }
+        if (isChecked) {
+            context.startService(new Intent(context, NotificationService.class));
         }
-        if (Objects.equals(intent.getAction(), "com.glebsterd.mytodolist.SETTINGS_CHANGED")) {
-
-            if (isChecked) {
-                context.startService(new Intent(context, NotificationService.class));
-            }
-            else {
-                context.stopService(new Intent(context, NotificationService.class));
-            }
+        else {
+            context.stopService(new Intent(context, NotificationService.class));
         }
 
     }// onReceive

@@ -172,11 +172,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }// adjustPreferences
 
     private String getSummaryString(int stringId, String value) {
-        StringBuilder stringBuilder = new StringBuilder();
-        return stringBuilder.append(getString(stringId))
-                .append("\t\t\t")
-                .append(value)
-                .toString();
+
+        return getString(stringId) + "\t\t\t" + value;
 
     }// getSummaryString
 

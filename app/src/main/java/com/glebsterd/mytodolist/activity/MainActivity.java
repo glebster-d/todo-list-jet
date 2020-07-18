@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d(TAG, "[OnCreate Method] ---> IN");
+        Log.d(TAG, "[OnCreate] ---> IN");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.main_container, MainListFragment.newInstance(), MainListFragment.class.getSimpleName())
                 .commit();
 
-        Log.d(TAG, "[OnCreate Method] ---> OUT");
+        Log.d(TAG, "[OnCreate] ---> OUT");
 
     }// onCreate
 
