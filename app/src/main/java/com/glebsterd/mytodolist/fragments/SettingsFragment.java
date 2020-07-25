@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private static final String TAG = "SettingsFragment";
 
-    private static final String BROADCAST_ACTION = "com.glebsterd.mytodolist.SETTINGS_CHANGED";
+    public static final String BROADCAST_SETTINGS_CHANGED = "com.glebsterd.mytodolist.SETTINGS_CHANGED";
 
     private DropDownPreference reminderTimePreference;
     private ListPreference ringtonePreference;
@@ -244,7 +244,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                     Boolean.parseBoolean(newValue.toString())).apply();
 
             Intent intent = new Intent(requireContext(), ServiceStarterReceiver.class);
-            intent.setAction(BROADCAST_ACTION);
+            intent.setAction(BROADCAST_SETTINGS_CHANGED);
             requireActivity().sendBroadcast(intent);
 
             preferenceUpdated = true;
