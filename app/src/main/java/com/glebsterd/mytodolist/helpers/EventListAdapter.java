@@ -85,6 +85,20 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         notifyDataSetChanged();
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void removeItem(int position) {
+        events.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Event item, int position) {
+        events.add(position, item);
+        notifyItemInserted(position);
+    }
+
     static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final AppCompatTextView tvTitle;

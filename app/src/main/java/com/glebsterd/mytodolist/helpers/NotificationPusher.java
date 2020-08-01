@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -21,6 +22,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -48,16 +50,16 @@ public final class NotificationPusher {
     public NotificationPusher(Application application) {
 
         this.application = application;
+        notificationManager = NotificationManagerCompat.from(application);
     }
 
     public final void pushNotifications() {
 
         int notificationCounter = 0;
 
-        notificationManager = NotificationManagerCompat.from(application);
         EventRepository eventRepository = new EventRepository(application);
 
-        LocalTime localTimeNow = LocalTime.now(ZoneId.systemDefault());
+        LocalTime localTimeNow = LocalTime.now();
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
         String[] preferenceReminderTime =
@@ -80,12 +82,20 @@ public final class NotificationPusher {
                 long duration = ChronoUnit.MINUTES.between(localTimeNow, eventTime);
                 int prefTime = Integer.parseInt(preferenceReminderTime[0]);
 
-                if (duration == prefTime) {
+                Log.d(TAG, "[PushNotifications] ---> [localTimeNow]: " + localTimeNow);
+                Log.d(TAG, "[PushNotifications] ---> [eventTime]: " + eventTime);
+                Log.d(TAG, "[PushNotifications] ---> [duration]: " + duration);
+                Log.d(TAG, "[PushNotifications] ---> [prefTime]: " + prefTime);
+
+                if (duration > 0 && duration <= prefTime) {
+                    Log.d(TAG, "[PushNotifications] ---> [Event]: " + event.toString());
                     createNotification(event, notificationCounter);
                     notificationCounter++;
                 }
 
             }// foreach
+
+            notificationCounter = 0;
         }
     }// startAlarms
 
@@ -152,10 +162,11 @@ public final class NotificationPusher {
 
                 summaryNotificationBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
                 notificationBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+                notificationManager.notify(NOTIFICATION + NOTIFICATION, summaryNotificationBuilder.build());
             }
 
             // Send notification summary and notification
-            notificationManager.notify(NOTIFICATION + NOTIFICATION, summaryNotificationBuilder.build());
+
             notificationManager.notify(NOTIFICATION + notificationCounter, notificationBuilder.build());
 
         } else {
