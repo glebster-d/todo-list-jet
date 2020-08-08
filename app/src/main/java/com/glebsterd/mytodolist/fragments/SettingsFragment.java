@@ -31,11 +31,10 @@ import com.glebsterd.mytodolist.receivers.ServiceStarterReceiver;
 import java.util.HashMap;
 import java.util.Objects;
 
-/**
- * Fragment with application settings
- */
+
 public class SettingsFragment extends PreferenceFragmentCompat
-        implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        implements Preference.OnPreferenceChangeListener,
+                    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "SettingsFragment";
 
@@ -45,108 +44,68 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private ListPreference ringtonePreference;
     private MainActivity parentActivity;
 
-    /**
-     * Constructor
-     */
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Get an instance of SettingsFragment
-     *
-     * @return instance of this fragment
-     */
+    public SettingsFragment() { }
+
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         adjustPreferences();
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
-    }// onCreateView
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
 
-    }// onCreate
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         menu.findItem(R.id.action_settings).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
+    }
 
-    }// onCreateOptionsMenu
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onResume() {
 
         super.onResume();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.settings);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
 
-    }// onResume
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onPause(){
 
         super.onPause();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.app_name);
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
 
-    }// onPause
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onStop() {
 
         super.onStop();
         parentActivity = null;
+    }
 
-    }// onStop
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onAttach(@NonNull Context context) {
 
         super.onAttach(context);
         parentActivity = (MainActivity) context;
-
-    }// onAttach
+    }
 
     private void adjustPreferences() {
         boolean isEnabled = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -168,16 +127,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         CheckBoxPreference alarmEnablePreference = getPreferenceManager().findPreference(getString(R.string.pref_alarm_check_key));
         Objects.requireNonNull(alarmEnablePreference).setOnPreferenceChangeListener(this);
-
-    }// adjustPreferences
+    }
 
     private String getSummaryString(int stringId, String value) {
 
         return getString(stringId) + "\t\t\t" + value;
+    }
 
-    }// getSummaryString
-
-    // Setting data to list preference
     private void setListPreferenceData(ListPreference ringtonePreference) {
 
         HashMap<String, Uri> alarms = getSystemAlarmRingtones();
@@ -192,8 +148,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         ringtonePreference.setEntries(listEntries);
         ringtonePreference.setEntryValues(listEntryValues);
-
-    }// setListPreferenceData
+    }
 
     private HashMap<String, Uri> getSystemAlarmRingtones(){
 
@@ -221,12 +176,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         cursor.close();
 
         return ringtoneHashMap;
+    }
 
-    }// getSystemAlarmRingtones
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
@@ -251,12 +202,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         }
 
         return preferenceUpdated;
+    }
 
-    }// onPreferenceChange
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
@@ -271,6 +218,5 @@ public class SettingsFragment extends PreferenceFragmentCompat
             summary = getSummaryString(R.string.pref_alarm_sound_summary, ringtonePreference.getEntry().toString());
             ringtonePreference.setSummary(summary);
         }
-    }// onSharedPreferenceChanged
-
-}// SettingsFragment.class
+    }
+}

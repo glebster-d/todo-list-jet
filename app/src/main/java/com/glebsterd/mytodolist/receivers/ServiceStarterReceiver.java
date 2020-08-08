@@ -10,16 +10,11 @@ import androidx.preference.PreferenceManager;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.services.NotificationService;
 
-/**
- * Start or stop notification service
- */
+
 public class ServiceStarterReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ServiceStarterReceiver";
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -34,6 +29,5 @@ public class ServiceStarterReceiver extends BroadcastReceiver {
         else {
             context.stopService(new Intent(context, NotificationService.class));
         }
-
-    }// onReceive
-}// class
+    }
+}

@@ -29,9 +29,9 @@ import com.glebsterd.mytodolist.helpers.OperationMode;
 import com.glebsterd.mytodolist.persistance.Event;
 import com.google.android.material.snackbar.Snackbar;
 
-/**
- * Main fragment with events list
- */
+import java.util.List;
+
+
 public class MainListFragment extends Fragment implements EventListAdapter.OnEventClickListener {
 
     private static final String TAG = "MainListFragment";
@@ -44,25 +44,12 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
     private RecyclerView recyclerView;
 
 
-    /**
-     * Constructor
-     */
-    public MainListFragment() {
-        // Required empty public constructor
-    }
+    public MainListFragment() { }
 
-    /**
-     * Get an instance of MainListFragment
-     *
-     * @return instance of this fragment
-     */
     public static MainListFragment newInstance() {
         return new MainListFragment();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onAttach(@NonNull Context context) {
 
@@ -72,24 +59,16 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         parentActivity = (MainActivity) context;
 
         Log.d(TAG, "[OnAttach] ---> OUT");
+    }
 
-    }// onAttach
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         Log.d(TAG, "[OnCreateView] ---> IN");
         return inflater.inflate(R.layout.fragment_main_recycle_view, container, false);
+    }
 
-    }// onCreateView
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -101,36 +80,42 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
 
         eventListAdapter = new EventListAdapter(this, parentActivity);
 
-        recyclerView = view.findViewById(R.id.recycle_view);
-        recyclerView.setAdapter(eventListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        setRecyclerView(view);
+        setViews(view);
+
+        listViewModel.getAllEvents().observe(getViewLifecycleOwner(), this::setVisibilityOfViews);
+        enableSwipeToDeleteAndUndo();
+    }
+
+    private void setVisibilityOfViews(List<Event> events) {
+
+        if(events == null || events.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            emptyImage.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyImage.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            eventListAdapter.setEvents(events);
+        }
+    }
+
+    private void setViews(@NonNull View view) {
 
         constraintLayout = view.findViewById(R.id.constraintLayout);
         emptyTextView = view.findViewById(R.id.tv_EmptyListLabel);
         emptyImage = view.findViewById(R.id.iv_EmptyListImg);
+    }
 
-        listViewModel.getAllEvents().observe(getViewLifecycleOwner(), events -> {
+    private void setRecyclerView(@NonNull View view) {
 
-            if(events == null || events.isEmpty()){
-                recyclerView.setVisibility(View.GONE);
-                emptyImage.setVisibility(View.VISIBLE);
-                emptyTextView.setVisibility(View.VISIBLE);
-            }
-            else {
-                emptyImage.setVisibility(View.GONE);
-                emptyTextView.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                eventListAdapter.setEvents(events);
-            }
-        });
+        recyclerView = view.findViewById(R.id.recycle_view);
+        recyclerView.setAdapter(eventListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
 
-        enableSwipeToDeleteAndUndo();
-
-    }// onViewCreated
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onResume() {
 
@@ -140,12 +125,8 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         parentActivity.getFab().show();
 
         Log.d(TAG, "[OnResume] ---> OUT");
+    }
 
-    }// onResume
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onPause() {
 
@@ -155,16 +136,17 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         parentActivity.getFab().hide();
 
         Log.d(TAG, "[OnPause] ---> OUT");
+    }
 
-    }// onPause
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onEventClick(Event event) {
 
         EventOperationsFragment fragment = EventOperationsFragment.newInstance();
+        setArguments(event, fragment);
+        parentActivity.replaceFragment(fragment,null);
+    }
+
+    private void setArguments(Event event, EventOperationsFragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("mode", OperationMode.EDIT);
         bundle.putString("title", event.getTitle());
@@ -172,10 +154,7 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
         bundle.putString("date", event.getDate());
         bundle.putString("time", event.getTime());
         fragment.setArguments(bundle);
-
-        parentActivity.replaceFragment(fragment,null);
-
-    }// onEventClick
+    }
 
     private void enableSwipeToDeleteAndUndo() {
 
@@ -207,7 +186,5 @@ public class MainListFragment extends Fragment implements EventListAdapter.OnEve
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-    }// enableSwipeToDeleteAndUndo
-
-}// MainListFragment.class
+    }
+}

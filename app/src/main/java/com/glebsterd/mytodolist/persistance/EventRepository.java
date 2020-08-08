@@ -11,19 +11,14 @@ import com.glebsterd.mytodolist.helpers.UpdateEventAsyncTask;
 
 import java.util.List;
 
-/**
- *  Repository for manipulating events (storing, updating e.t.c)
- */
+
 public class EventRepository {
 
     private final EventDao eventDao;
     private final LiveData<List<Event>> eventsList;
 
-    /**
-     * Constructor
-     * @param application application context
-     */
     public EventRepository(Application application) {
+
         EventDatabase db = EventDatabase.getDatabase(application);
         this.eventDao = db.eventDao();
         this.eventsList = eventDao.getAllEvents();
@@ -52,5 +47,4 @@ public class EventRepository {
 
         return eventDao.getAllEventsSortedByDate(date);
     }
-
-}// EventRepository.class
+}

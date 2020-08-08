@@ -17,23 +17,24 @@ import java.time.ZoneId;
 import java.util.Objects;
 
 
-/**
- * Dialog that creates DatePicker
- */
 public class EventDateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "EventDateDialog";
 
     private int day, month, year;
 
-    /**
-     * {@inheritDoc}
-     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         Log.d(TAG, "[OnCreateDialog] ---> IN");
+
+        restoreFromSavedState(savedInstanceState);
+
+        return new DatePickerDialog(requireActivity(), this, year, month - 1, day);
+    }
+
+    private void restoreFromSavedState(@Nullable Bundle savedInstanceState) {
 
         if (savedInstanceState != null){
             day = savedInstanceState.getInt("day");
@@ -46,22 +47,17 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
             month = localDate.getMonthValue();
             year = localDate.getYear();
         }
-
-        return new DatePickerDialog(requireActivity(), this, year, month - 1, day);
-
-    }// onCreateDialog
+    }
 
     private LocalDate getLocalDateFromArguments() {
 
         Bundle args = getArguments();
 
         return ( args != null ) ?
-                LocalDate.parse(args.getString("date")) : LocalDate.now(ZoneId.systemDefault());
+                LocalDate.parse(args.getString("date")) :
+                LocalDate.now(ZoneId.systemDefault());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 
@@ -73,12 +69,8 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
         Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), localDate.toString());
 
         Log.d(TAG, "[OnDataSet Method] ---> OUT ");
+    }
 
-    }// onDateSet
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
@@ -86,7 +78,5 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
         outState.putInt("day", day);
         outState.putInt("month", month);
         outState.putInt("year", year);
-
-    }// onSaveInstanceState
-
-}// EventDateDialog.class
+    }
+}

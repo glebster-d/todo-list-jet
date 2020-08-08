@@ -9,10 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.glebsterd.mytodolist.helpers.NotificationRunnable;
 
-/**
- * Service that starts background thread that runs every minute and checks database entries.
- * If current date and date of entry are the same, service thread will trigger notification.
- */
+
 public class NotificationService extends Service {
 
     private static final String TAG = "NotificationService";
@@ -20,9 +17,6 @@ public class NotificationService extends Service {
     private NotificationRunnable notificationRunnable;
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreate() {
 
@@ -31,27 +25,19 @@ public class NotificationService extends Service {
         notificationRunnable = new NotificationRunnable(getApplication());
         Thread notificationThread = new Thread(notificationRunnable);
         notificationThread.start();
+    }
 
-    }// onCreate
-
-    /**
-     * {@inheritDoc}
-     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         return START_STICKY;
-
-    }// onStartCommand
+    }
 
     @Override
     public void onDestroy() {
@@ -60,5 +46,4 @@ public class NotificationService extends Service {
         super.onDestroy();
         notificationRunnable.cancel();
     }
-
-}// class
+}

@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebsterd.mytodolist.R;
 
-/**
- *
- */
+
 abstract public class ItemSwipeCallback extends ItemTouchHelper.Callback {
 
     private static final String TAG = "ItemSwipeCallback";
@@ -41,37 +39,24 @@ abstract public class ItemSwipeCallback extends ItemTouchHelper.Callback {
         intrinsicHeight = deleteDrawable.getIntrinsicHeight();
     }
 
-    /**
-     *{@inheritDoc}
-     */
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView,
                                 @NonNull RecyclerView.ViewHolder viewHolder) {
         return makeMovementFlags(0, ItemTouchHelper.LEFT);
     }
 
-    /**
-     *{@inheritDoc}
-     */
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView,
                           @NonNull RecyclerView.ViewHolder viewHolder,
                           @NonNull RecyclerView.ViewHolder target) {
         return false;
+    }
 
-    }// onMove
-
-    /**
-     *{@inheritDoc}
-     */
     @Override
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
         return 0.5f;
     }
 
-    /**
-     *{@inheritDoc}
-     */
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                             @NonNull RecyclerView.ViewHolder viewHolder,
@@ -106,10 +91,9 @@ abstract public class ItemSwipeCallback extends ItemTouchHelper.Callback {
         deleteDrawable.draw(c);
 
         //super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-    }// onChildDraw
+    }
 
     private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
         c.drawRect(left, top, right, bottom, clearPaint);
     }
-}// class
+}

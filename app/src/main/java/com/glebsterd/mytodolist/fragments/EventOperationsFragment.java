@@ -27,10 +27,9 @@ import com.glebsterd.mytodolist.persistance.Event;
 
 import java.util.Objects;
 
-/**
- * Fragment that responsible for adding new event or editing existing event
- */
-public class EventOperationsFragment extends Fragment implements View.OnClickListener, DialogFragmentListener {
+
+public class EventOperationsFragment extends Fragment
+        implements View.OnClickListener, DialogFragmentListener {
 
     private static final String TAG = "EventOperationsFragment";
 
@@ -41,25 +40,14 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
 
     private String title = "", description = "", time = "", date = "";
 
-    /**
-     * Constructor
-     */
     public EventOperationsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Get an instance of EventOperationsFragment
-     *
-     * @return instance of this fragment
-     */
     public static EventOperationsFragment newInstance(){
         return new EventOperationsFragment();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onAttach(@NonNull Context context) {
 
@@ -69,23 +57,15 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         parentActivity = (MainActivity) context;
 
         Log.d(TAG, "[OnAttach] ---> OUT");
+    }
 
-    }// onAttach
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
 
-    }// onCreate
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onResume() {
 
@@ -93,30 +73,21 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         String title = (mode == OperationMode.ADD) ?
                 getString(R.string.fragment_add_title) : getString(R.string.fragment_edit_title);
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(title);
+    }
 
-    }// onResume
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onPause() {
 
         super.onPause();
         Objects.requireNonNull(parentActivity.getSupportActionBar()).setTitle(R.string.app_name);
+    }
 
-    }// onPause
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         menu.findItem(R.id.action_settings).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
-
-    }// onCreateOptionsMenu
+    }
 
     private void restoreViewData(Bundle savedInstanceState) {
 
@@ -133,24 +104,16 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         etDate.setText(date);
 
         Log.d(TAG, "[RestoreViewData] ---> OUT");
+    }
 
-    }// restoreViewData
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         Log.d(TAG, "[OnCreateView] ---> IN");
         return inflater.inflate(R.layout.fragment_event_operations, container, false);
+    }
 
-    }// onCreateView
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -158,10 +121,19 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
 
         super.onViewCreated(view, savedInstanceState);
         adjustViews(view);
+        restoreFromSavedState(savedInstanceState);
+        getOperationModeFromArguments();
 
+        Log.d(TAG, "[OnViewCreated] ---> OUT");
+    }
+
+    private void restoreFromSavedState(@Nullable Bundle savedInstanceState) {
         if(savedInstanceState != null){
             restoreViewData(savedInstanceState);
         }
+    }
+
+    private void getOperationModeFromArguments() {
 
         Bundle args = getArguments();
 
@@ -170,33 +142,27 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
             mode = (OperationMode) args.getSerializable("mode");
             restoreViewData(args);
         }
+    }
 
-        Log.d(TAG, "[OnViewCreated] ---> OUT");
-
-    }// onViewCreated
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         Log.d(TAG, "[OnSaveInstanceState] ---> IN");
 
         super.onSaveInstanceState(outState);
+        getFormDataToSave(outState);
+
+        Log.d(TAG, "[OnSaveInstanceState Method] ---> OUT ");
+    }
+
+    private void getFormDataToSave(@NonNull Bundle outState) {
 
         if(title != null){ outState.putString("title", title); }
         if(description != null){ outState.putString("description", description); }
         if(date != null){ outState.putString("date", date); }
         if(time != null){ outState.putString("time", time); }
+    }
 
-        Log.d(TAG, "[OnSaveInstanceState Method] ---> OUT ");
-
-    }// onSaveInstanceState
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onClick(View view) {
 
@@ -234,8 +200,7 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         }
 
         Log.d(TAG, "[OnClick] ---> OUT");
-
-    }// onClick
+    }
 
     private void savingNewEvent(View view) {
 
@@ -254,26 +219,31 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         }
 
         Log.d(TAG, "[SavingNewEvent] ---> OUT");
-
-    }// savingNewEvent
+    }
 
     private void saveEvent(String title, String date, String time, String description) {
 
+        String message = "";
         switch (mode) {
 
             case ADD:
                 parentActivity.getViewModel().insert(new Event(date, time, title, description));
-                parentActivity.getSupportFragmentManager().popBackStack();
-                Toast.makeText(parentActivity, getString(R.string.event_was_added), Toast.LENGTH_LONG).show();
+                message = getString(R.string.event_was_added);
+                //parentActivity.getSupportFragmentManager().popBackStack();
+                //Toast.makeText(parentActivity, getString(R.string.event_was_added), Toast.LENGTH_LONG).show();
                 break;
 
             case EDIT:
                 parentActivity.getViewModel().update(new Event(date, time, title, description));
-                parentActivity.getSupportFragmentManager().popBackStack();
-                Toast.makeText(parentActivity, getString(R.string.event_was_updated), Toast.LENGTH_LONG).show();
+                message = getString(R.string.event_was_updated);
+                //parentActivity.getSupportFragmentManager().popBackStack();
+                //Toast.makeText(parentActivity, getString(R.string.event_was_updated), Toast.LENGTH_LONG).show();
                 break;
         }
-    }// saveEvent
+
+        parentActivity.getSupportFragmentManager().popBackStack();
+        Toast.makeText(parentActivity, message, Toast.LENGTH_LONG).show();
+    }
 
     private boolean isValidEventInput(String title, String date, String time) {
         return !time.trim().isEmpty() && !date.trim().isEmpty() && !title.trim().isEmpty();
@@ -293,12 +263,8 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
         btnSave.setOnClickListener(this::savingNewEvent);
         AppCompatButton btnCancel = view.findViewById(R.id.btn_Cancel);
         btnCancel.setOnClickListener(v -> parentActivity.onBackPressed());
+    }
 
-    }// adjustViews
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onFinishEditingDialog(@NonNull String dialogName, @NonNull String data) {
 
@@ -312,6 +278,5 @@ public class EventOperationsFragment extends Fragment implements View.OnClickLis
                 etDate.setText(data);
                 break;
         }
-    }// onFinishEditingDialog
-
-}// EventOperationsFragment.class
+    }
+}
