@@ -19,10 +19,8 @@ import com.glebsterd.mytodolist.persistance.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -37,7 +35,7 @@ public final class NotificationPusher {
 
     private static final int NOTIFICATION = 30;
 
-    private NotificationManagerCompat notificationManager;
+    private final NotificationManagerCompat notificationManager;
     private final Application application;
     private List<Event> eventList;
     private String dateNow = "";
@@ -94,8 +92,6 @@ public final class NotificationPusher {
                 }
 
             }// foreach
-
-            notificationCounter = 0;
         }
     }// startAlarms
 

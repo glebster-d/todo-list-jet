@@ -24,17 +24,17 @@ public class EventRepository {
         this.eventsList = eventDao.getAllEvents();
     }
 
-    public void insert(Event event) {
+    public void insert(@NonNull Event event) {
 
         new AddEventAsyncTask(eventDao).execute(event);
     }
 
-    public void update(Event event) {
+    public void update(@NonNull Event event) {
 
         new UpdateEventAsyncTask(eventDao).execute(event);
     }
 
-    public void delete(Event event) {
+    public void delete(@NonNull Event event) {
 
         new DeleteEventAsyncTask(eventDao).execute(event);
     }

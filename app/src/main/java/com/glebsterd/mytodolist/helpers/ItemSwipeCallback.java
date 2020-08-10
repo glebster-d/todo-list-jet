@@ -2,7 +2,6 @@ package com.glebsterd.mytodolist.helpers;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -17,17 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.glebsterd.mytodolist.R;
 
+import java.util.Objects;
+
 
 abstract public class ItemSwipeCallback extends ItemTouchHelper.Callback {
 
-    private static final String TAG = "ItemSwipeCallback";
+    //private static final String TAG = "ItemSwipeCallback";
 
-    private Context context;
-    private Paint clearPaint;
-    private int intrinsicWidth;
-    private int intrinsicHeight;
-    private Drawable deleteDrawable;
-    private ColorDrawable background;
+    private final Context context;
+    private final Paint clearPaint;
+    private final int intrinsicWidth;
+    private final int intrinsicHeight;
+    private final Drawable deleteDrawable;
+    private final ColorDrawable background;
 
     protected ItemSwipeCallback(Context context) {
         this.context = context;
@@ -35,7 +36,7 @@ abstract public class ItemSwipeCallback extends ItemTouchHelper.Callback {
         clearPaint = new Paint();
         clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_delete);
-        intrinsicWidth = deleteDrawable.getIntrinsicWidth();
+        intrinsicWidth = Objects.requireNonNull(deleteDrawable).getIntrinsicWidth();
         intrinsicHeight = deleteDrawable.getIntrinsicHeight();
     }
 
