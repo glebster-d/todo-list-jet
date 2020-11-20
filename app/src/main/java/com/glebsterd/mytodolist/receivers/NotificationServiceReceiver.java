@@ -26,10 +26,22 @@ public class NotificationServiceReceiver extends BroadcastReceiver {
 
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "[OnReceive] ---> IN ");
+            Log.d(TAG, "[OnReceive] ---> [Intent Action]: " + intent.getAction());
         }
+
         if (Objects.equals(intent.getAction(), "android.intent.action.BOOT_COMPLETED")) {
 
             context.startService(new Intent(context, NotificationService.class));
         }
+
+        if(Objects.equals(intent.getAction(), "com.glebsterd.mytodolist.SETTINGS_CHANGED")) {
+
+            boolean isServiceRequere = intent.getBooleanExtra("data", false);
+
+            if (isServiceRequere) {
+                context.startService(new Intent(context, NotificationService.class));
+            }
+        }
+
     }// onReceive
 }// class

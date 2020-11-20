@@ -28,6 +28,7 @@ import androidx.preference.PreferenceManager;
 import com.glebsterd.mytodolist.BuildConfig;
 import com.glebsterd.mytodolist.R;
 import com.glebsterd.mytodolist.activity.MainActivity;
+import com.glebsterd.mytodolist.receivers.NotificationServiceReceiver;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -223,9 +224,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
             sharedPreferences.edit().putBoolean(getString(R.string.pref_alarm_check_key),
                     Boolean.parseBoolean(newValue.toString())).apply();
 
-            Intent intent = new Intent();
+            Intent intent = new Intent(requireContext(), NotificationServiceReceiver.class);
             intent.setAction(BROADCAST_ACTION);
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent);
+            intent.putExtra("data", Boolean.parseBoolean(newValue.toString()));
+            getActivity().sendBroadcast(intent);
+            //LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent);
 
             preferenceUpdated = true;
         }
