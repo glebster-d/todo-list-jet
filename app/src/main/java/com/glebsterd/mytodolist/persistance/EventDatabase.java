@@ -11,9 +11,6 @@ import com.glebsterd.mytodolist.R;
 
 // TODO: No migration strategy added. Must add migration strategy
 
-/**
- * Main database class for storing events
- */
 @Database(entities = {Event.class}, version = 1, exportSchema = false)
 public abstract class EventDatabase extends RoomDatabase {
 
@@ -39,5 +36,4 @@ public abstract class EventDatabase extends RoomDatabase {
 
         return eventDatabase;
     }
-
-}// EventDatabase.class
+}

@@ -10,9 +10,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-/**
- * Data access object for events manipulation
- */
+
 @Dao
 public interface EventDao {
 
@@ -30,5 +28,4 @@ public interface EventDao {
 
     @Delete
     void deleteEvent(@NonNull Event event);
-
-}// interface
+}

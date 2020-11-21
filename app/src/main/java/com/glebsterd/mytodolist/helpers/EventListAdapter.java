@@ -20,35 +20,26 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- */
+
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
 
     private static final String TAG = "EventListAdapter";
 
-    private final Context context;
     private List<Event> events;
+    private final Context context;
     private final OnEventClickListener eventClickListener;
-
 
     public interface OnEventClickListener {
 
         void onEventClick(Event event);
     }
 
-    /**
-     * Constructor
-     */
     public EventListAdapter(OnEventClickListener eventClickListener, Context context) {
 
         this.eventClickListener = eventClickListener;
         this.context = context;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @NonNull
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,12 +47,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         View eventView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycle_view_item, parent, false);
         return new EventViewHolder(eventView, eventClickListener, context);
+    }
 
-    }// onCreateViewHolder
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
 
@@ -70,19 +57,33 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             Event event = events.get(position);
             holder.setData(event);
         }
-    }// onBindViewHolder
+    }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getItemCount() {
         return (events == null) ? 0 : events.size();
     }
 
     public void setEvents(List<Event> events) {
+
         this.events = events;
         notifyDataSetChanged();
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void removeItem(int position) {
+
+        events.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Event item, int position) {
+
+        events.add(position, item);
+        notifyItemInserted(position);
     }
 
     static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -113,10 +114,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             tvTime.setText(time);
             tvTitle.setText(event.getTitle());
             tvDescription.setText(event.getDescription());
+        }
 
-        }// setData
-
-        // Convert time string written in different time formats to current time format
         private String getFormattedTimeFromString(String time) {
 
             String formattedTimeString;
@@ -130,11 +129,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             DateTimeFormatter timeFormatter = null;
 
             if (matcherOf12HourFormat.find()) {
-                Log.d(TAG, "getFormattedTimeFromString: pattern 12");
+                Log.d(TAG, "[GetFormattedTimeFromString] ---> Pattern 12-hour");
                 timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
             }
             else if (matcherOf24HourFormat.find()) {
-                Log.d(TAG, "getFormattedTimeFromString: pattern 24");
+                Log.d(TAG, "[GetFormattedTimeFromString] ---> Pattern 24-hour");
                 timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
             }
 
@@ -144,12 +143,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
                     formattedTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
 
             return formattedTimeString;
+        }
 
-        }// getFormattedTimeFromString
-
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void onClick(View v) {
 
@@ -160,9 +155,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
             Event event = new Event(date,time,title,description);
             eventClickListener.onEventClick(event);
-
-        }// onClick
-
-    }// EventViewHolder.class
-
-}// EventListAdapter.class
+        }
+    }
+}

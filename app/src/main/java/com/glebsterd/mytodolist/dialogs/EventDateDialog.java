@@ -27,7 +27,14 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        Log.d(TAG, "OnCreateDialog Method entrance");
+        Log.d(TAG, "[OnCreateDialog] ---> IN");
+
+        restoreFromSavedState(savedInstanceState);
+
+        return new DatePickerDialog(requireActivity(), this, year, month - 1, day);
+    }
+
+    private void restoreFromSavedState(@Nullable Bundle savedInstanceState) {
 
         if (savedInstanceState != null){
             day = savedInstanceState.getInt("day");
@@ -35,42 +42,20 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
             year = savedInstanceState.getInt("year");
         }
         else{
-            LocalDate localDate = getCalendarFromArguments();
+            LocalDate localDate = getLocalDateFromArguments();
             day = localDate.getDayOfMonth();
             month = localDate.getMonthValue();
             year = localDate.getYear();
         }
-
-        return new DatePickerDialog(requireActivity(), this, year, month - 1, day);
     }
 
-    private LocalDate getCalendarFromArguments() {
+    private LocalDate getLocalDateFromArguments() {
 
-//        Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
-//        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
         Bundle args = getArguments();
 
-//        LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
-//        LocalDate.parse(args.getString("date"));
-//
-//        String dateString = ( args != null ) ?
-//                args.getString("date") :
-//                //dateFormat.format(Calendar.getInstance().getTime());
-//                localDate.toString();
-
-//        if (dateString != null) {
-//
-//            try {
-//                Date date = dateFormat.parse(dateString);
-//                calendar.setTime(date != null ? date : new Date());
-//
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         return ( args != null ) ?
-                LocalDate.parse(args.getString("date")) : LocalDate.now(ZoneId.systemDefault());
+                LocalDate.parse(args.getString("date")) :
+                LocalDate.now(ZoneId.systemDefault());
     }
 
     @Override
@@ -82,15 +67,16 @@ public class EventDateDialog extends DialogFragment implements DatePickerDialog.
         DialogFragmentListener listener = (DialogFragmentListener) getTargetFragment();
         LocalDate localDate = LocalDate.of(year,month + 1,day);
         Objects.requireNonNull(listener).onFinishEditingDialog(this.getClass().getSimpleName(), localDate.toString());
+
         Log.d(TAG, "[OnDataSet Method] ---> OUT ");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+
         super.onSaveInstanceState(outState);
         outState.putInt("day", day);
         outState.putInt("month", month);
         outState.putInt("year", year);
     }
-
-}// EventDateDialog.class
+}

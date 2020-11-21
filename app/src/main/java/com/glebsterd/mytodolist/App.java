@@ -9,13 +9,16 @@ import android.os.Build;
 
 import androidx.multidex.MultiDexApplication;
 
-import com.glebsterd.mytodolist.services.NotificationService;
+import com.glebsterd.mytodolist.receivers.ServiceStarterReceiver;
+
+import static com.glebsterd.mytodolist.fragments.SettingsFragment.BROADCAST_SETTINGS_CHANGED;
 
 
 /**
  *
  */
 public class App extends MultiDexApplication {
+
 
     /**
      * {@inheritDoc}
@@ -25,8 +28,9 @@ public class App extends MultiDexApplication {
         super.onCreate();
         setNotificationChannels();
 
-        Intent intent = new Intent(this, NotificationService.class);
-        startService(intent);
+        Intent intent = new Intent(this, ServiceStarterReceiver.class);
+        intent.setAction(BROADCAST_SETTINGS_CHANGED);
+        sendBroadcast(intent);
 
     }// onCreate
 

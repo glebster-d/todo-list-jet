@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -18,7 +19,6 @@ import com.glebsterd.mytodolist.persistance.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -35,7 +35,7 @@ public final class NotificationPusher {
 
     private static final int NOTIFICATION = 30;
 
-    private NotificationManagerCompat notificationManager;
+    private final NotificationManagerCompat notificationManager;
     private final Application application;
     private List<Event> eventList;
     private String dateNow = "";
@@ -46,17 +46,18 @@ public final class NotificationPusher {
      * @param application application context
      */
     public NotificationPusher(Application application) {
+
         this.application = application;
+        notificationManager = NotificationManagerCompat.from(application);
     }
 
     public final void pushNotifications() {
 
         int notificationCounter = 0;
 
-        notificationManager = NotificationManagerCompat.from(application);
         EventRepository eventRepository = new EventRepository(application);
 
-        LocalTime localTimeNow = LocalTime.now(ZoneId.systemDefault());
+        LocalTime localTimeNow = LocalTime.now();
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(application);
         String[] preferenceReminderTime =
@@ -79,14 +80,19 @@ public final class NotificationPusher {
                 long duration = ChronoUnit.MINUTES.between(localTimeNow, eventTime);
                 int prefTime = Integer.parseInt(preferenceReminderTime[0]);
 
-                if (duration == prefTime) {
+                Log.d(TAG, "[PushNotifications] ---> [localTimeNow]: " + localTimeNow);
+                Log.d(TAG, "[PushNotifications] ---> [eventTime]: " + eventTime);
+                Log.d(TAG, "[PushNotifications] ---> [duration]: " + duration);
+                Log.d(TAG, "[PushNotifications] ---> [prefTime]: " + prefTime);
+
+                if (duration > 0 && duration <= prefTime) {
+                    Log.d(TAG, "[PushNotifications] ---> [Event]: " + event.toString());
                     createNotification(event, notificationCounter);
                     notificationCounter++;
                 }
 
             }// foreach
         }
-
     }// startAlarms
 
     private LocalTime getFormattedEventTime(String time) {
@@ -152,10 +158,11 @@ public final class NotificationPusher {
 
                 summaryNotificationBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
                 notificationBuilder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+                notificationManager.notify(NOTIFICATION + NOTIFICATION, summaryNotificationBuilder.build());
             }
 
             // Send notification summary and notification
-            notificationManager.notify(NOTIFICATION + NOTIFICATION, summaryNotificationBuilder.build());
+
             notificationManager.notify(NOTIFICATION + notificationCounter, notificationBuilder.build());
 
         } else {
@@ -179,7 +186,6 @@ public final class NotificationPusher {
 
             notificationManager.notify(NOTIFICATION + notificationCounter, notificationBuilder.build());
         }
-
     }// createNotification
 
 }// class

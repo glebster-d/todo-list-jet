@@ -7,9 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
-/**
- *  Event POJO
- */
+
 @Entity(tableName = "my_events")
 public class Event {
 
@@ -33,9 +31,6 @@ public class Event {
     @ColumnInfo(name = "event_description")
     private String description = "";
 
-
-    //      ------ Constructors ------
-
     @Ignore
     public Event(@NonNull String date, @NonNull String time ,@NonNull String title) {
 
@@ -49,8 +44,6 @@ public class Event {
         this(date, time,title);
         this.description = description;
     }
-
-    //      ------ Getters / Setters ------
 
     public long getId() {
         return id;
@@ -89,4 +82,4 @@ public class Event {
                 ", description='" + description + '\'' +
                 '}';
     }
-}// Event.class
+}

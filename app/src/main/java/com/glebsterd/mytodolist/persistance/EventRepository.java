@@ -11,35 +11,30 @@ import com.glebsterd.mytodolist.helpers.UpdateEventAsyncTask;
 
 import java.util.List;
 
-/**
- *  Repository for manipulating events (storing, updating e.t.c)
- */
+
 public class EventRepository {
 
     private final EventDao eventDao;
     private final LiveData<List<Event>> eventsList;
 
-    /**
-     * Constructor
-     * @param application application context
-     */
     public EventRepository(Application application) {
+
         EventDatabase db = EventDatabase.getDatabase(application);
         this.eventDao = db.eventDao();
         this.eventsList = eventDao.getAllEvents();
     }
 
-    public void insert(Event event) {
+    public void insert(@NonNull Event event) {
 
         new AddEventAsyncTask(eventDao).execute(event);
     }
 
-    public void update(Event event) {
+    public void update(@NonNull Event event) {
 
         new UpdateEventAsyncTask(eventDao).execute(event);
     }
 
-    public void delete(Event event) {
+    public void delete(@NonNull Event event) {
 
         new DeleteEventAsyncTask(eventDao).execute(event);
     }
@@ -52,5 +47,4 @@ public class EventRepository {
 
         return eventDao.getAllEventsSortedByDate(date);
     }
-
-}// EventRepository.class
+}
